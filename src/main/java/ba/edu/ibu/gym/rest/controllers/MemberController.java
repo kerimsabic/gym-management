@@ -2,10 +2,7 @@ package ba.edu.ibu.gym.rest.controllers;
 
 import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.service.MemberService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,10 @@ public class MemberController {
     @GetMapping("/{id}")
     public Member findById(@PathVariable int id){
         return memberService.findById(id);
+    }
+
+    @GetMapping("/send-to-all")
+    public String sendEmailToAllUsers(@RequestParam String message) {
+        return memberService.sendEmailToAllUsers(message);
     }
 }

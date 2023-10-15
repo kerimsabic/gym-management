@@ -1,6 +1,8 @@
 configuration:
   swagger:
-    app:'Gym magagement'
-    description:'Gym maanegemt system'
-    developer:'Kerim Sabic'
-    email:'kerim.sabic@stu.ibu.edu.ba'
+    app: 'Gym management'
+    description: 'Gym manegement system'
+    developer: 'Kerim Sabic'
+    email: 'kerim.sabic@stu.ibu.edu.ba'
+  mailsender:
+    default: 'Mailgun'
