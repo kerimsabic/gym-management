@@ -1,0 +1,6 @@
+configuration:
+  swagger:
+    app:'Gym magagement'
+    description:'Gym maanegemt system'
+    developer:'Kerim Sabic'
+    email:'kerim.sabic@stu.ibu.edu.ba'
