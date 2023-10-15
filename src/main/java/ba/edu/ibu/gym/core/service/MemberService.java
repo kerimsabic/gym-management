@@ -37,4 +37,8 @@ public class MemberService {
         List<Member> members = memberRepository.findAll();
         return mailSender.send(members, message);
     }
+    public String sendEmailToUser(String message,int id) {
+        Member member=memberRepository.findById(id);
+        return mailSender.sendSpecific(member,message);
+    }
 }

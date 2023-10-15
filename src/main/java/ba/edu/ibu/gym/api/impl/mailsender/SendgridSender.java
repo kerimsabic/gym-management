@@ -15,6 +15,11 @@ public class SendgridSender implements MailSender {
         for(Member member:members){
             System.out.println("Message sent to: "+member.getEmail());
         }
-        return "Message "+message+"\n sent via Sendgrid";
+        return "Message: "+message+"\n sent via Sendgrid";
+    }
+
+    @Override
+    public String sendSpecific(Member member, String message) {
+        return "Message: "+message+"\n sent via Sendgrid to "+member.getEmail();
     }
 }

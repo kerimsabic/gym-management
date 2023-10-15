@@ -9,4 +9,6 @@ import java.util.List;
 @Component
 public interface MailSender {
     public String send(List<Member> members, String message);
+    public String sendSpecific(Member member, String message);
+
 }

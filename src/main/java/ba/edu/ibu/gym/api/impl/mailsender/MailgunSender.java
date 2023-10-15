@@ -15,6 +15,11 @@ public class MailgunSender implements MailSender {
         for (Member member:members){
             System.out.println("Message sent to: "+member.getEmail());
         }
-        return "Message "+message+"\n sent via Mailgun";
+        return "Message: "+message+"\n sent via Mailgun";
+    }
+
+    @Override
+    public String sendSpecific(Member member, String message) {
+        return "Message: "+message+"\n sent via Mailgun to "+member.getEmail();
     }
 }

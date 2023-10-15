@@ -29,4 +29,8 @@ public class MemberController {
     public String sendEmailToAllUsers(@RequestParam String message) {
         return memberService.sendEmailToAllUsers(message);
     }
+    @GetMapping("/sendEmail/{id}")
+    public String sendEmailToUser(@RequestParam String message,@PathVariable int id) {
+        return memberService.sendEmailToUser(message,id);
+    }
 }
