@@ -6,3 +6,9 @@ configuration:
     email: 'kerim.sabic@stu.ibu.edu.ba'
   mailsender:
     default: 'Mailgun'
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://kerimsabic:sifra@gym.f9lt0t2.mongodb.net/?retryWrites=true&w=majority
+      database: gym
