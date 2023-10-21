@@ -1,6 +1,7 @@
 package ba.edu.ibu.gym.core.service;
 
 import ba.edu.ibu.gym.core.api.mailsender.MailSender;
+import ba.edu.ibu.gym.core.exceptions.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,9 +41,33 @@ public class UserService {
                 .collect(toList());
     }
 
+    public UserDTO getUserById(String id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            //throw new ("error");
+        }
+        return new UserDTO(user.get());
+    }
+
     public UserDTO addUser(UserRequestDTO payload) {
         User user = userRepository.save(payload.toEntity());
         return new UserDTO(user);
+    }
+
+    public  UserDTO updateUser(String id, UserRequestDTO payload){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+
+        }
+        User updatedUser= payload.toEntity();
+        updatedUser.setId(user.get().getId());
+        updatedUser=userRepository.save(updatedUser);
+        return new UserDTO(updatedUser);
+    }
+
+    public void deleteUser(String id){
+        Optional<User> user = userRepository.findById(id);
+        user.ifPresent(userRepository::delete);
     }
 
 
