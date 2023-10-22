@@ -16,7 +16,10 @@ public class User {
     private String email;
     private String phone;
     private String address;
+    private String image;
 
+    //not sure here if I should just add String trainerId instead of User trainer
+    private User trainer;
 
 
 
@@ -82,6 +85,22 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public User getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(User trainer) {
+        this.trainer = trainer;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
 

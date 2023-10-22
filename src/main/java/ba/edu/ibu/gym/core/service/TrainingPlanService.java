@@ -1,6 +1,7 @@
 package ba.edu.ibu.gym.core.service;
 
 
+import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.TrainingPlan;
 import ba.edu.ibu.gym.core.repository.TrainingPlanRepository;
 import ba.edu.ibu.gym.rest.dto.PlanRequestDTO;
@@ -24,7 +25,7 @@ public class TrainingPlanService {
     public TrainingPlan getPlanById(String id) {
         Optional<TrainingPlan> trainingPlan = trainingPlanRepository.findById(id);
         if (trainingPlan.isEmpty()) {
-            //throw new exception
+            throw new ResourceNotFoundException("Training plan with the given ID does not exist.");
         }
         return trainingPlan.get();
     }
@@ -37,7 +38,7 @@ public class TrainingPlanService {
     public TrainingPlan updateTrainigPlan(String id, PlanRequestDTO plan) {
         Optional<TrainingPlan> trainingPlan = trainingPlanRepository.findById(id);
         if (trainingPlan.isEmpty()) {
-            //throw new exception;
+            throw new ResourceNotFoundException("Training plan with the given ID does not exist.");
         }
         TrainingPlan updatedPlan = plan.toEntity();
         updatedPlan.setId(trainingPlan.get().getId());

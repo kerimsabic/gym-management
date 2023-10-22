@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable String id){
+    public ResponseEntity<Void> deleteUser(@PathVariable String id){
         userService.deleteUser(id);
         return null;
     }

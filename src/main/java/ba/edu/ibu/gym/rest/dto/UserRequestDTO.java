@@ -12,6 +12,9 @@ public class UserRequestDTO {
     private UserType userType;
     private String phone;
     private String address;
+    private User trainer;
+    private String image;
+
 
     public  UserRequestDTO() { }
 
@@ -23,6 +26,8 @@ public class UserRequestDTO {
         this.userType = user.getUserType();
         this.phone=user.getPhone();
         this.address=user.getAddress();
+        this.trainer=user.getTrainer();
+        this.image=user.getImage();
     }
     public User toEntity(){
         User user= new User();
@@ -33,6 +38,8 @@ public class UserRequestDTO {
         user.setUserType(userType);
         user.setAddress(address);
         user.setPhone(phone);
+        user.setTrainer(trainer);
+        user.setImage(image);
         return user;
     }
 
@@ -90,5 +97,21 @@ public class UserRequestDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public User getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(User trainer) {
+        this.trainer = trainer;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -1,12 +1,10 @@
 package ba.edu.ibu.gym.core.service;
 
-import ba.edu.ibu.gym.core.api.mailsender.MailSender;
-import ba.edu.ibu.gym.core.exceptions.ResourceNotFoundException;
+import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
 import ba.edu.ibu.gym.rest.dto.UserRequestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +42,7 @@ public class UserService {
     public UserDTO getUserById(String id){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
-            //throw new ("error");
+            throw new ResourceNotFoundException("The user with the given ID does not exist.");
         }
         return new UserDTO(user.get());
     }
@@ -57,7 +55,7 @@ public class UserService {
     public  UserDTO updateUser(String id, UserRequestDTO payload){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
-
+            throw new ResourceNotFoundException("The user with the given ID does not exist.");
         }
         User updatedUser= payload.toEntity();
         updatedUser.setId(user.get().getId());
