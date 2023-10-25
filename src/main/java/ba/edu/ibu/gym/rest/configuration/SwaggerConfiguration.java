@@ -23,5 +23,5 @@ import org.springframework.context.annotation.Configuration;
                 @Server(url = "/", description = "Default Server URL")
         }
 )
-public class SwagerConfiguration {
+public class SwaggerConfiguration {
 }
