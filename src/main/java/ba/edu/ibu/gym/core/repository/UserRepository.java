@@ -13,6 +13,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
     //no need for now
-  /*  Optional<User> findFirstByEmailLike(String emailPattern);
-    List<User>findByEmailAndUserType(String email,UserType userType);*/
+
 }

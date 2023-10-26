@@ -9,7 +9,6 @@ public class UserDTO {
     private String lastName;
     private UserType userType;
     private String email;
-    private User trainer;
     private String image;
 
 
@@ -17,9 +16,8 @@ public class UserDTO {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName=user.getLastName();
-        this.userType = user.getUserType();
+        //this.userType = user.getUserType();
         this.email = user.getEmail();
-        this.trainer= user.getTrainer();
         this.image=user.getImage();
     }
 
@@ -63,13 +61,7 @@ public class UserDTO {
         this.id = id;
     }
 
-    public User getTrainer() {
-        return trainer;
-    }
 
-    public void setTrainer(User trainer) {
-        this.trainer = trainer;
-    }
 
     public String getImage() {
         return image;

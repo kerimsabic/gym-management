@@ -4,11 +4,12 @@ configuration:
     description: 'Gym manegement system'
     developer: 'Kerim Sabic'
     email: 'kerim.sabic@stu.ibu.edu.ba'
+
   mailsender:
-    default: 'Mailgun'
+    default: 'mailgun'
 
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://kerimsabic:sifra@gym.f9lt0t2.mongodb.net/?retryWrites=true&w=majority
+      uri: mongodb+srv://kerimsabic2:sifra@gym.f9lt0t2.mongodb.net/?retryWrites=true&w=majority
       database: gym

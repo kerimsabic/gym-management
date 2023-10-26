@@ -1,0 +1,29 @@
+package ba.edu.ibu.gym.core.model;
+
+import ba.edu.ibu.gym.core.model.enums.UserType;
+import ba.edu.ibu.gym.rest.dto.MemberDTO;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
+
+@Document
+public class Trainer extends User{
+    private  UserType userType=UserType.TRAINER;
+
+    private List<MemberDTO> members;
+
+
+
+    public List<MemberDTO> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<MemberDTO> members) {
+        this.members = members;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+}

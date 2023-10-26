@@ -1,10 +1,10 @@
 package ba.edu.ibu.gym.core.repository;
 
-import ba.edu.ibu.gym.core.model.Attendance;
+import ba.edu.ibu.gym.core.model.Trainer;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AttendanceRepository extends MongoRepository<Attendance, String> {
-    //nothing for now
+public interface TrainerRepository extends MongoRepository<Trainer,String> {
+
 }

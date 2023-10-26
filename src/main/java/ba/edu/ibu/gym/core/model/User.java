@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
-    private UserType userType;
+   // private UserType userType;
     private String firstName;
     private String lastName;
     private String password;
@@ -18,8 +18,7 @@ public class User {
     private String address;
     private String image;
 
-    //not sure here if I should just add String trainerId instead of User trainer
-    private User trainer;
+
 
 
 
@@ -31,13 +30,13 @@ public class User {
         this.id = id;
     }
 
-    public UserType getUserType() {
+   /* public UserType getUserType() {
         return userType;
     }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
-    }
+    }*/
 
     public String getFirstName() {
         return firstName;
@@ -87,13 +86,6 @@ public class User {
         this.password = password;
     }
 
-    public User getTrainer() {
-        return trainer;
-    }
-
-    public void setTrainer(User trainer) {
-        this.trainer = trainer;
-    }
 
     public String getImage() {
         return image;

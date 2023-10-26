@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private  UserRepository userRepository;
 
    /* The first method of implemetation, need to comment out conditional property in both senders
     @Autowired
@@ -25,6 +25,8 @@ public class UserService {
 
    /* @Autowired
     private MailSender mailSender;*/
+
+
 
 
     public UserService(UserRepository userRepository) {
