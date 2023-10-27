@@ -34,14 +34,14 @@ public class TrainerController {
     public ResponseEntity<TrainerDTO> createTrainer(@RequestBody TrainerRequestDTO trainer){
         return ResponseEntity.ok(trainerService.addTrainer(trainer));
     }
-   /* @RequestMapping(method = RequestMethod.PUT,path = "/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable String id,@RequestBody UserRequestDTO user){
-        return ResponseEntity.ok(userService.updateUser(id,user));
-    }*/
+    @RequestMapping(method = RequestMethod.PUT,path = "/{id}")
+    public ResponseEntity<TrainerDTO> updateTrainer(@PathVariable String id,@RequestBody TrainerRequestDTO trainer){
+        return ResponseEntity.ok(trainerService.updateTrainer(id,trainer));
+    }
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id){
-        trainerService.deleteUser(id);
+    public ResponseEntity<Void> deleteTrainer(@PathVariable String id){
+        trainerService.deleteTrainer(id);
         return null;
     }
 }

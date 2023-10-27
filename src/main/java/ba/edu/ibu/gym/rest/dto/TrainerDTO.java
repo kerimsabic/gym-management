@@ -2,21 +2,19 @@ package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.UserType;
 
 import java.util.List;
 
-public class TrainerDTO {
+public class TrainerDTO extends UserDTO{
     private List<MemberDTO> members;
-    private String firstName;
-    private String lastName;
 
 
     public TrainerDTO(Trainer trainer) {
-
+        super(trainer);
 
         this.members=trainer.getMembers();
-        this.firstName = trainer.getFirstName();
-        this.lastName = trainer.getLastName();
+
 
     }
 
@@ -27,4 +25,9 @@ public class TrainerDTO {
     public void setMembers(List<MemberDTO> members) {
         this.members = members;
     }
+
+   /* @Override
+    public void setUserType(UserType userType) {
+        super.setUserType(UserType.TRAINER);
+    }*/
 }

@@ -13,10 +13,19 @@ public class TrainerRequestDTO extends UserRequestDTO{
     public  TrainerRequestDTO() { }
 
     public TrainerRequestDTO(Trainer trainer) {
+       // super(trainer);
         this.members=trainer.getMembers();
     }
     public Trainer toEntity(){
         Trainer trainer= new Trainer();
+
+        trainer.setFirstName(this.getFirstName());
+        trainer.setLastName(this.getLastName());
+        trainer.setEmail(this.getEmail());
+        trainer.setAddress(this.getAddress());
+        trainer.setImage(this.getImage());
+        trainer.setPassword(this.getPassword());
+        trainer.setPhone(this.getPhone());
         trainer.setMembers(members);
         return trainer;
     }

@@ -4,6 +4,7 @@ import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.repository.TrainerRepository;
+import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.TrainerDTO;
 import ba.edu.ibu.gym.rest.dto.TrainerRequestDTO;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
@@ -18,11 +19,13 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class TrainerService {
     private TrainerRepository trainerRepository;
+    private UserRepository userRepository;
 
 
 
-    public TrainerService(TrainerRepository trainerRepository) {
+    public TrainerService(TrainerRepository trainerRepository,UserRepository userRepository) {
         this.trainerRepository = trainerRepository;
+        this.userRepository=userRepository;
     }
 
     public List<TrainerDTO> getTrainers() {
@@ -43,6 +46,7 @@ public class TrainerService {
 
     public TrainerDTO addTrainer(TrainerRequestDTO payload) {
         Trainer trainer = trainerRepository.save(payload.toEntity());
+        userRepository.save(trainer);
         return new TrainerDTO(trainer);
     }
 
@@ -54,11 +58,17 @@ public class TrainerService {
         Trainer updatedTrainer= payload.toEntity();
         updatedTrainer.setId(trainer.get().getId());
         updatedTrainer=trainerRepository.save(updatedTrainer);
+        userRepository.save(updatedTrainer);
         return new TrainerDTO(updatedTrainer);
     }
 
-    public void deleteUser(String id){
+    public void deleteTrainer(String id){
+
         Optional<Trainer> trainer = trainerRepository.findById(id);
-        trainer.ifPresent(trainerRepository::delete);
+        trainer.ifPresent(trainer1 -> {
+            trainerRepository.delete(trainer1);
+            userRepository.delete(trainer1);
+        });
+
     }
 }

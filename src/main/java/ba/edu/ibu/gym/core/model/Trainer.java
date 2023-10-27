@@ -8,7 +8,7 @@ import java.util.List;
 
 @Document
 public class Trainer extends User{
-    private  UserType userType=UserType.TRAINER;
+
 
     private List<MemberDTO> members;
 
@@ -22,8 +22,9 @@ public class Trainer extends User{
         this.members = members;
     }
 
-    public UserType getUserType() {
-        return userType;
-    }
+  //  public UserType getUserType() {
+      //  return userType;
+    //}
+
 
 }
