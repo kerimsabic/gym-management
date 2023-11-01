@@ -4,14 +4,16 @@ import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.User;
 
-public class MemberDTO {
+public class MemberDTO extends UserDTO{
+    private String qrCode;
+
     private Trainer trainer;
 
-
-
     public MemberDTO(Member member) {
-        this.trainer= member.getTrainer();
+        super(member);
+        this.trainer=member.getTrainer();
     }
+
 
     public Trainer getTrainer() {
         return trainer;
@@ -19,5 +21,13 @@ public class MemberDTO {
 
     public void setTrainer(Trainer trainer) {
         this.trainer = trainer;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
     }
 }

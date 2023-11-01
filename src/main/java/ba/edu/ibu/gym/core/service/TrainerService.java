@@ -5,12 +5,10 @@ import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.repository.TrainerRepository;
 import ba.edu.ibu.gym.core.repository.UserRepository;
-import ba.edu.ibu.gym.rest.dto.TrainerDTO;
-import ba.edu.ibu.gym.rest.dto.TrainerRequestDTO;
-import ba.edu.ibu.gym.rest.dto.UserDTO;
-import ba.edu.ibu.gym.rest.dto.UserRequestDTO;
+import ba.edu.ibu.gym.rest.dto.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +21,11 @@ public class TrainerService {
 
 
 
+
     public TrainerService(TrainerRepository trainerRepository,UserRepository userRepository) {
         this.trainerRepository = trainerRepository;
         this.userRepository=userRepository;
+
     }
 
     public List<TrainerDTO> getTrainers() {
@@ -43,6 +43,29 @@ public class TrainerService {
         }
         return new TrainerDTO(trainer.get());
     }
+
+    public Trainer getTrainerById2(String id){
+        Optional<Trainer> trainer = trainerRepository.findById(id);
+        if(trainer.isEmpty()){
+            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+        }
+        return trainer.get();
+    }
+
+
+
+  /*  public TrainerDTO addMemberToTrainer(String memberId,String traienrId){
+        Optional<Trainer> trainer = trainerRepository.findById(traienrId);
+        if(trainer.isEmpty()){
+            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+        }
+        MemberDTO member=memberService.getMemberById(memberId);
+        List<MemberDTO> members = new ArrayList<>();
+        trainer.get().setMembers(members);
+        return new TrainerDTO(trainer.get());
+    }*/ //ovo sam uradio u members servisu kada se dodaje novi member
+
+
 
     public TrainerDTO addTrainer(TrainerRequestDTO payload) {
         Trainer trainer = trainerRepository.save(payload.toEntity());

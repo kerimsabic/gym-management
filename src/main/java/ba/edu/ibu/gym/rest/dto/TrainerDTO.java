@@ -1,8 +1,7 @@
 package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.Trainer;
-import ba.edu.ibu.gym.core.model.User;
-import ba.edu.ibu.gym.core.model.enums.UserType;
+
 
 import java.util.List;
 
@@ -12,7 +11,6 @@ public class TrainerDTO extends UserDTO{
 
     public TrainerDTO(Trainer trainer) {
         super(trainer);
-
         this.members=trainer.getMembers();
 
 
