@@ -3,6 +3,7 @@ package ba.edu.ibu.gym.core.service;
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.TrainerRepository;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.*;
@@ -44,6 +45,7 @@ public class TrainerService {
         return new TrainerDTO(trainer.get());
     }
 
+    //need this for assigning trainer to member
     public Trainer getTrainerById2(String id){
         Optional<Trainer> trainer = trainerRepository.findById(id);
         if(trainer.isEmpty()){
@@ -68,7 +70,11 @@ public class TrainerService {
 
 
     public TrainerDTO addTrainer(TrainerRequestDTO payload) {
-        Trainer trainer = trainerRepository.save(payload.toEntity());
+
+        Trainer trainer = payload.toEntity();
+        trainer.setUserType(UserType.TRAINER);
+        trainerRepository.save(trainer);
+
         userRepository.save(trainer);
         return new TrainerDTO(trainer);
     }

@@ -128,9 +128,7 @@ public MembershipDTO createMembership(MembershipRequestDTO membershipRequestDTO)
     public void deleteMembership(String id){
 
         Optional<Membership> membership = membershipRepository.findById(id);
-        membership.ifPresent(trainer1 -> {
-            membershipRepository.delete(trainer1);
-        });
+        membership.ifPresent(membershipRepository::delete);
 
     }
 }

@@ -3,7 +3,9 @@ package ba.edu.ibu.gym.core.service;
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.Trainer;
+import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.MemberRepository;
+import ba.edu.ibu.gym.core.repository.TrainerRepository;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.*;
 import org.springframework.stereotype.Service;
@@ -20,13 +22,15 @@ public class MemberService {
     private MemberRepository memberRepository;
     private TrainerService trainerService;
     private UserRepository userRepository;
+    private TrainerRepository trainerRepository;
 
   //  public MemberService(){}
 
-    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService) {
+    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository) {
         this.memberRepository = memberRepository;
         this.userRepository=userRepository;
         this.trainerService=trainerService;
+        this.trainerRepository=trainerRepository;
     }
 
     public List<MemberDTO> getMembers() {
@@ -94,11 +98,27 @@ public class MemberService {
     }*/
 
 
+    public TrainerDTO addMemberToTrainer(String memberId, String trainerId){
+        Optional<Trainer> trainer = trainerRepository.findById(trainerId);
+        if(trainer.isEmpty()){
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
+        }
+        MemberDTO member=getMemberById(memberId);
+        List<MemberDTO> members = trainer.get().getMembers();
+        members.add(member);
+        trainer.get().setMembers(members);
+        return new TrainerDTO(trainer.get());
+    }
+
+
 
      public MemberDTO addMember(MemberRequestDTO payload) {
 
         String trainerId=payload.getTrainerId();
         Member member = payload.toEntity();
+        String memberId= payload.getTrainerId();
+
+        member.setUserType(UserType.MEMBER);
 
      //   memberRepository.save(payload.toEntity());
          if (trainerId != null) {
@@ -106,6 +126,9 @@ public class MemberService {
              //ovje mi izbacuje i sifru i sve jer je Trainer a ne TrainerDTO
              Trainer newTrainer=trainerService.getTrainerById2(trainerId);
              member.setTrainer(newTrainer);
+
+             //ovo isto ne radi
+           //  addMemberToTrainer(memberId,trainerId );
 
            /*  List<MemberDTO> members = new ArrayList<>();
             // members.add(new MemberDTO(member));// da doda membera i trainer members listu

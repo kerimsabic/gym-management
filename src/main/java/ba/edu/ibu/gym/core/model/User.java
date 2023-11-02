@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
-   // private UserType userType;
+    private UserType userType;
     private String firstName;
     private String lastName;
     private String password;
@@ -30,13 +30,13 @@ public class User {
         this.id = id;
     }
 
-   /* public UserType getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
-    }*/
+    }
 
     public String getFirstName() {
         return firstName;
