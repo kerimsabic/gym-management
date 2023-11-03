@@ -24,7 +24,7 @@ public class MemberService {
     private UserRepository userRepository;
     private TrainerRepository trainerRepository;
 
-  //  public MemberService(){}
+
 
     public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository) {
         this.memberRepository = memberRepository;
@@ -42,31 +42,7 @@ public class MemberService {
                 .map(MemberDTO::new)
                 .collect(toList());
     }
-    //ova funkcija mi ne vraca podatke od trenera
 
-/*
-    public List<MemberDTO> getMembersWithTrainers() {
-        List<Member> members = memberRepository.findAll();
-        List<MemberDTO> membersWithTrainers = new ArrayList<>();
-
-        for (Member member : members) {
-            MemberDTO memberDTO = new MemberDTO(member);
-            memberDTO.setId(member.getId());
-            memberDTO.setFirstName(member.getFirstName());
-            memberDTO.setLastName(member.getLastName());
-            memberDTO.setEmail(member.getEmail());
-            memberDTO.setImage(member.getImage());
-            memberDTO.setQrCode(member.getQrCode());
-
-            // Retrieve the associated Trainer using the reference in the Member document
-            TrainerDTO trainer = member.getTrainer();
-            memberDTO.setTrainer(trainer);
-
-            membersWithTrainers.add(memberDTO);
-        }
-
-        return membersWithTrainers;
-    }*/
 
 
 
@@ -74,19 +50,19 @@ public class MemberService {
     public MemberDTO getMemberById(String id){
         Optional<Member> member = memberRepository.findById(id);
         if(member.isEmpty()){
-            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+            throw new ResourceNotFoundException("The member with the given ID does not exist.");
         }
         return new MemberDTO(member.get());
     }
 
-    /*
+
     public Member getMemberById2(String id){
         Optional<Member> member = memberRepository.findById(id);
         if(member.isEmpty()){
             throw new ResourceNotFoundException("The user with the given ID does not exist.");
         }
         return member.get();
-    }*/
+    }
 
 
    /* public MemberDTO addMember(MemberRequestDTO payload, Trainer trainer) {
@@ -98,7 +74,7 @@ public class MemberService {
     }*/
 
 
-    public TrainerDTO addMemberToTrainer(String memberId, String trainerId){
+    public void addMemberToTrainer(String memberId, String trainerId){
         Optional<Trainer> trainer = trainerRepository.findById(trainerId);
         if(trainer.isEmpty()){
             throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
@@ -107,7 +83,7 @@ public class MemberService {
         List<MemberDTO> members = trainer.get().getMembers();
         members.add(member);
         trainer.get().setMembers(members);
-        return new TrainerDTO(trainer.get());
+       // return new TrainerDTO(trainer.get());
     }
 
 
@@ -127,8 +103,8 @@ public class MemberService {
              Trainer newTrainer=trainerService.getTrainerById2(trainerId);
              member.setTrainer(newTrainer);
 
-             //ovo isto ne radi
-           //  addMemberToTrainer(memberId,trainerId );
+
+
 
            /*  List<MemberDTO> members = new ArrayList<>();
             // members.add(new MemberDTO(member));// da doda membera i trainer members listu
@@ -138,11 +114,14 @@ public class MemberService {
              memberRepository.save(member);
          }
 
-
          memberRepository.save(member);
 
          userRepository.save(member);
+
+        // addMemberToTrainer(memberId,trainerId );
+
         return new MemberDTO(member);
+
     }
 
 
@@ -151,7 +130,7 @@ public class MemberService {
     public  MemberDTO updateMember(String id, MemberRequestDTO payload){
         Optional<Member> member = memberRepository.findById(id);
         if(member.isEmpty()){
-            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+            throw new ResourceNotFoundException("The member with the given ID does not exist.");
         }
         Member updatedMembers= payload.toEntity();
         String trainerId=payload.getTrainerId();

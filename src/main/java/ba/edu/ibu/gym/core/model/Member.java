@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Member extends User{
-   // private final UserType userType=UserType.MEMBER;
+
     private Trainer trainer;
     private String qrCode;
 
@@ -19,15 +19,10 @@ public class Member extends User{
         return trainer;
     }
 
+
     public void setTrainer(Trainer trainer) {
         this.trainer = trainer;
     }
-
-
-   /* public  void serTrainer2(TrainerDTO trainerDTO){
-        this.trainer = trainer;
-
-    }*/
 
 
     public String getQrCode() {

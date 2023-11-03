@@ -2,31 +2,34 @@ package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.Membership;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 public class MembershipRequestDTO {
+
     private String memberId;
-    private Date startDate;
-    private int months;
+    private String trainingPlanId;
+    private int numOfMonths;
 
+    public MembershipRequestDTO() {
 
+    }
 
-    public MembershipRequestDTO(Membership membership, String memberId, int months) {
+    public MembershipRequestDTO(Membership membership, String memberId, String trainingPlanId, int numOfMonths) {
+        this.trainingPlanId = trainingPlanId;
         this.memberId = memberId;
-        this.months=months;
-        this.startDate=membership.getStartDate();
+        this.numOfMonths = numOfMonths;
+
     }
 
-    public Membership toEntity(){
-        Membership membership= new Membership();
+    public Membership toEntity() {
+        Membership membership = new Membership();
         membership.setStartDate(new Date());
-
-       this.setEndDate(months);
         this.setMemberId(memberId);
-
-        return  membership;
+        this.setTrainingPlanId(trainingPlanId);
+        this.setNumOfMonths(numOfMonths);
+        return membership;
     }
+
 
     public String getMemberId() {
         return memberId;
@@ -36,19 +39,21 @@ public class MembershipRequestDTO {
         this.memberId = memberId;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getTrainingPlanId() {
+        return trainingPlanId;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setTrainingPlanId(String trainingPlanId) {
+        this.trainingPlanId = trainingPlanId;
     }
 
-    public int getEndDate() {
-        return months;
+    public int getNumOfMonths() {
+        return numOfMonths;
     }
 
-    public void setEndDate(int months) {
-        this.months = months;
+    public void setNumOfMonths(int numOfMonths) {
+        this.numOfMonths = numOfMonths;
     }
+
+
 }

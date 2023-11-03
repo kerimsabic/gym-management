@@ -1,19 +1,19 @@
 package ba.edu.ibu.gym.core.model;
 
-
-import ba.edu.ibu.gym.rest.dto.MemberDTO;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
 @Document
 public class Membership {
+    @Id
     private String id;
-    private MemberDTO member;
+    private Member member;
+
     private Date startDate;
     private Date endDate;
-
-
+    private TrainingPlan trainingPlan;
 
     public String getId() {
         return id;
@@ -23,11 +23,11 @@ public class Membership {
         this.id = id;
     }
 
-    public MemberDTO getMember() {
+    public Member getMember() {
         return member;
     }
 
-    public void setMember(MemberDTO member) {
+    public void setMember(Member member) {
         this.member = member;
     }
 
@@ -45,5 +45,13 @@ public class Membership {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public TrainingPlan getTrainingPlan() {
+        return trainingPlan;
+    }
+
+    public void setTrainingPlan(TrainingPlan trainingPlan) {
+        this.trainingPlan = trainingPlan;
     }
 }

@@ -2,6 +2,7 @@ package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.UserType;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class TrainerRequestDTO extends UserRequestDTO{
         trainer.setImage(this.getImage());
         trainer.setPassword(this.getPassword());
         trainer.setPhone(this.getPhone());
+       // trainer.setUserType(UserType.TRAINER);
         trainer.setMembers(members);
         return trainer;
     }

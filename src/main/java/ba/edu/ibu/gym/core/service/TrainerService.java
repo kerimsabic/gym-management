@@ -40,7 +40,7 @@ public class TrainerService {
     public TrainerDTO getTrainerById(String id){
         Optional<Trainer> trainer = trainerRepository.findById(id);
         if(trainer.isEmpty()){
-            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
         }
         return new TrainerDTO(trainer.get());
     }
@@ -49,23 +49,12 @@ public class TrainerService {
     public Trainer getTrainerById2(String id){
         Optional<Trainer> trainer = trainerRepository.findById(id);
         if(trainer.isEmpty()){
-            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
         }
         return trainer.get();
     }
 
 
-
-  /*  public TrainerDTO addMemberToTrainer(String memberId,String traienrId){
-        Optional<Trainer> trainer = trainerRepository.findById(traienrId);
-        if(trainer.isEmpty()){
-            throw new ResourceNotFoundException("The user with the given ID does not exist.");
-        }
-        MemberDTO member=memberService.getMemberById(memberId);
-        List<MemberDTO> members = new ArrayList<>();
-        trainer.get().setMembers(members);
-        return new TrainerDTO(trainer.get());
-    }*/ //ovo sam uradio u members servisu kada se dodaje novi member
 
 
 
@@ -82,7 +71,7 @@ public class TrainerService {
     public  TrainerDTO updateTrainer(String id, TrainerRequestDTO payload){
         Optional<Trainer> trainer = trainerRepository.findById(id);
         if(trainer.isEmpty()){
-            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
         }
         Trainer updatedTrainer= payload.toEntity();
         updatedTrainer.setId(trainer.get().getId());

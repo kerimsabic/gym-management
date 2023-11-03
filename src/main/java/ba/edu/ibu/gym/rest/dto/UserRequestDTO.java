@@ -9,7 +9,7 @@ public class UserRequestDTO {
     private String lastName;
     private String email;
     private String password;
-    private UserType userType;
+    //private UserType userType;
     private String phone;
     private String address;
     private String image;
@@ -22,7 +22,7 @@ public class UserRequestDTO {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.userType = user.getUserType();
+        //this.userType = user.getUserType();
         this.phone=user.getPhone();
         this.address=user.getAddress();
         this.image=user.getImage();
@@ -33,7 +33,7 @@ public class UserRequestDTO {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
-        user.setUserType(userType);
+       // user.setUserType(userType);
         user.setAddress(address);
         user.setPhone(phone);
         user.setImage(image);
@@ -99,11 +99,11 @@ public class UserRequestDTO {
         this.image = image;
     }
 
-    public UserType getUserType() {
+   /* public UserType getUserType() {
         return userType;
     }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
-    }
+    }*/
 }
