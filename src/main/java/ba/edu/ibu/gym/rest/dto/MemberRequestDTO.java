@@ -27,6 +27,7 @@ public class MemberRequestDTO extends UserRequestDTO {
         member.setPassword(this.getPassword());
         member.setPhone(this.getPhone());
         member.setQrCode(this.qrCode);
+        member.setUsername(this.getUsername());
        // member.setTrainer(getTrainerId());
        this.setTrainerId(trainerId);
      //  member.setTrainer();
@@ -40,7 +41,8 @@ public class MemberRequestDTO extends UserRequestDTO {
         return trainerId;
     }
 
-    public void setTrainerId(String trainerId) {
+    public void
+    setTrainerId(String trainerId) {
         this.trainerId = trainerId;
     }
 

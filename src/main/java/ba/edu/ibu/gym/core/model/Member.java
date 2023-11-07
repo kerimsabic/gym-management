@@ -11,8 +11,13 @@ public class Member extends User{
     private Trainer trainer;
     private String qrCode;
 
+    public Member(){
 
+    }
 
+    public Member(User user) {
+        super();
+    }
 
 
     public Trainer getTrainer() {

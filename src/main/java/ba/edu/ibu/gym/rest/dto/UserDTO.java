@@ -9,6 +9,7 @@ public class UserDTO {
     private String lastName;
     private UserType userType;
     private String email;
+    private String username;
     private String image;
 
 
@@ -19,6 +20,7 @@ public class UserDTO {
         this.userType = user.getUserType();
         this.email = user.getEmail();
         this.image=user.getImage();
+        this.username=user.getUsername();
     }
 
     public String getEmail() {
@@ -69,5 +71,13 @@ public class UserDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

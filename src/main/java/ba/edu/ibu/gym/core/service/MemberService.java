@@ -137,6 +137,8 @@ public class MemberService {
 
         updatedMembers.setId(member.get().getId());
 
+        updatedMembers.setUserType(UserType.MEMBER);
+
         if(trainerId!=null){
             //ovje mi izbacuje i sifru i sve jer je Trainer a ne TrainerDTO
             Trainer newTrainer=trainerService.getTrainerById2(trainerId);
