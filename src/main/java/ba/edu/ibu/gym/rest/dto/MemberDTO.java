@@ -1,8 +1,6 @@
 package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.Member;
-import ba.edu.ibu.gym.core.model.Trainer;
-import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 
 public class MemberDTO extends UserDTO{
@@ -19,13 +17,17 @@ public class MemberDTO extends UserDTO{
 
     public MemberDTO(Member member) {
         super(member);
-        //this.trainer=member.getTrainer();
-        this.trainerName=member.getTrainer().getFirstName()+" "+member.getTrainer().getLastName();
-        this.trainerEmail=member.getTrainer().getEmail();
-        this.trainerId=member.getTrainer().getId();
-        this.trainerUserType=member.getTrainer().getUserType();
 
-       // this.trainer=new TrainerDTO(member.getTrainer()) //does not work when I put trainerDTO
+
+        if(member.getTrainer()!=null) {
+
+            this.trainerName = member.getTrainer().getFirstName() + " " + member.getTrainer().getLastName();
+            this.trainerEmail = member.getTrainer().getEmail();
+            this.trainerId = member.getTrainer().getId();
+            this.trainerUserType = member.getTrainer().getUserType();
+        }
+
+
     }
 
 

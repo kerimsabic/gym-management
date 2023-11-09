@@ -140,7 +140,7 @@ public class MemberService {
         updatedMembers.setUserType(UserType.MEMBER);
 
         if(trainerId!=null){
-            //ovje mi izbacuje i sifru i sve jer je Trainer a ne TrainerDTO
+
             Trainer newTrainer=trainerService.getTrainerById2(trainerId);
             updatedMembers.setTrainer(newTrainer);
             List<MemberDTO> members = new ArrayList<>();
