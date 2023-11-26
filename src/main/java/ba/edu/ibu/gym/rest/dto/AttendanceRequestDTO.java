@@ -9,10 +9,14 @@ import java.util.Date;
 
 public class AttendanceRequestDTO {
 
-   // private Date attendanceDate;
     private String memberId;
 
     public AttendanceRequestDTO(){
+
+    }
+
+    public AttendanceRequestDTO(String memberId){
+        this.memberId=memberId;
 
     }
 
@@ -21,6 +25,7 @@ public class AttendanceRequestDTO {
         this.memberId=memberId;
 
     }
+
 
     public Attendance toEntity(){
         Attendance attendance=new Attendance();

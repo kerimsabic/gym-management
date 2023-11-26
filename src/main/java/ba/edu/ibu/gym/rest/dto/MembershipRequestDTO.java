@@ -20,6 +20,12 @@ public class MembershipRequestDTO {
         this.numOfMonths = numOfMonths;
 
     }
+    public MembershipRequestDTO(Membership membership) {
+        this.trainingPlanId = trainingPlanId;
+        this.memberId = memberId;
+        this.numOfMonths = numOfMonths;
+
+    }
 
     public Membership toEntity() {
         Membership membership = new Membership();
