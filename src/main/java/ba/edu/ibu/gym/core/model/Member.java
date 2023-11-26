@@ -11,6 +11,11 @@ public class Member extends User{
     private Trainer trainer;
     private String qrCode;
 
+    public Member( Trainer trainer, String qrCode) {
+        this.trainer = trainer;
+        this.qrCode = qrCode;
+    }
+
     public Member(){
 
     }

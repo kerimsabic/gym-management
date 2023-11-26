@@ -25,7 +25,20 @@ public class User implements UserDetails {
     private String address;
     private String image;
 
+    public User(String id, String firstName, String lastName, String password, String email, String username, String phone, String address, String image) {
+        this.id = id;
+        this.userType = userType;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.username = username;
+        this.phone = phone;
+        this.address = address;
+        this.image = image;
+    }
 
+    public User (){}
 
 
 

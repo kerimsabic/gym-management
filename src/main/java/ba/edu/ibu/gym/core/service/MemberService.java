@@ -65,24 +65,18 @@ public class MemberService {
     }
 
 
-   /* public MemberDTO addMember(MemberRequestDTO payload, Trainer trainer) {
-        String trainerId=payload.getTrainerId();
-        TrainerDTO newTrainer=trainerService.getTrainerById(trainerId);
-
-        Member member = memberRepository.save(payload.toEntity());
-        return new MemberDTO(member);
-    }*/
-
 
     public void addMemberToTrainer(String memberId, String trainerId){
         Optional<Trainer> trainer = trainerRepository.findById(trainerId);
         if(trainer.isEmpty()){
             throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
         }
-        MemberDTO member=getMemberById(memberId);
-        List<MemberDTO> members = trainer.get().getMembers();
+        Member member=getMemberById2(memberId);
+        List<Member> members = trainer.get().getMembers();
         members.add(member);
         trainer.get().setMembers(members);
+        //ovdje je sejvano treba samo memberDTO popravit
+        trainerRepository.save(trainer.get());
        // return new TrainerDTO(trainer.get());
     }
 
@@ -96,29 +90,22 @@ public class MemberService {
 
         member.setUserType(UserType.MEMBER);
 
-     //   memberRepository.save(payload.toEntity());
          if (trainerId != null) {
 
-             //ovje mi izbacuje i sifru i sve jer je Trainer a ne TrainerDTO
              Trainer newTrainer=trainerService.getTrainerById2(trainerId);
              member.setTrainer(newTrainer);
 
 
-
-
-           /*  List<MemberDTO> members = new ArrayList<>();
-            // members.add(new MemberDTO(member));// da doda membera i trainer members listu
-             newTrainer.setMembers(members);*/
-
-
-             memberRepository.save(member);
+             //memberRepository.save(member);
          }
 
          memberRepository.save(member);
 
          userRepository.save(member);
 
-        // addMemberToTrainer(memberId,trainerId );
+
+         Member member2=memberRepository.save(member);
+         addMemberToTrainer(member2.getId(),trainerId );
 
         return new MemberDTO(member);
 
@@ -143,7 +130,7 @@ public class MemberService {
 
             Trainer newTrainer=trainerService.getTrainerById2(trainerId);
             updatedMembers.setTrainer(newTrainer);
-            List<MemberDTO> members = new ArrayList<>();
+            List<Member> members = new ArrayList<>();
             newTrainer.setMembers(members);
         }
 

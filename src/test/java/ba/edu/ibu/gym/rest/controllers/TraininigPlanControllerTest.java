@@ -53,6 +53,7 @@ public class TraininigPlanControllerTest {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/api/trainingPlans/").contentType(MediaType.APPLICATION_JSON)).andReturn();
         String response = result.getResponse().getContentAsString();
         System.out.println(response);
+
     }
 
 }

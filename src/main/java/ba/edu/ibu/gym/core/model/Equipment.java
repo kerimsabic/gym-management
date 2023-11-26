@@ -16,6 +16,15 @@ public class Equipment {
     private String image;
     private List<Date> serviceHistory;
 
+    public Equipment(String id, String name, String type, String manufacturer, String image, List<Date> serviceHistory) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.manufacturer = manufacturer;
+        this.image = image;
+        this.serviceHistory = serviceHistory;
+    }
+    public Equipment(){}
 
     public String getId() {
         return id;

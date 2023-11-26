@@ -1,5 +1,6 @@
 package ba.edu.ibu.gym.rest.dto;
 
+import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.model.enums.UserType;
@@ -7,7 +8,7 @@ import ba.edu.ibu.gym.core.model.enums.UserType;
 import java.util.List;
 
 public class TrainerRequestDTO extends UserRequestDTO{
-    private List<MemberDTO> members;
+    private List<Member> members;
 
 
 
@@ -32,11 +33,11 @@ public class TrainerRequestDTO extends UserRequestDTO{
         return trainer;
     }
 
-    public List<MemberDTO> getMembers() {
+    public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(List<MemberDTO> members) {
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
 }

@@ -1,12 +1,14 @@
 package ba.edu.ibu.gym.rest.dto;
 
+import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.Trainer;
 
 
 import java.util.List;
 
 public class TrainerDTO extends UserDTO{
-    private List<MemberDTO> members;
+    private List<Member> members;
+
 
 
     public TrainerDTO(Trainer trainer) {
@@ -16,11 +18,11 @@ public class TrainerDTO extends UserDTO{
 
     }
 
-    public List<MemberDTO> getMembers() {
+    public List<Member> getMembers() {
         return members;
     }
 
-    public void setMembers(List<MemberDTO> members) {
+    public void setMembers(List<Member> members) {
         this.members = members;
     }
 

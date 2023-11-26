@@ -15,6 +15,17 @@ public class Membership {
     private Date endDate;
     private TrainingPlan trainingPlan;
 
+
+    public Membership(String id, Member member, Date startDate, Date endDate, TrainingPlan trainingPlan) {
+        this.id = id;
+        this.member = member;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.trainingPlan = trainingPlan;
+    }
+
+    public Membership(){}
+
     public String getId() {
         return id;
     }

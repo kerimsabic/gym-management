@@ -17,6 +17,16 @@ public class Attendance {
     private Member member;
 
 
+    public Attendance(String id, Date attendanceDate, Member member) {
+        this.id = id;
+        this.attendanceDate = attendanceDate;
+        this.member = member;
+    }
+
+    public Attendance(){}
+
+
+
 
     public String getId() {
         return id;
