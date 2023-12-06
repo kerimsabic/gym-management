@@ -57,9 +57,9 @@ public class MemberController {
         return null;
     }
 
-  /*  @RequestMapping(method = RequestMethod.PUT,path = "/{id}/{id2}")
+    @RequestMapping(method = RequestMethod.PUT,path = "/{id}/{id2}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
     public ResponseEntity<MemberDTO> addMembertToTrainerSpecial(@RequestParam String memberId,@RequestParam String trainerId){
         return ResponseEntity.ok(memberService.addMemberToTrainerSpecial(memberId,trainerId));
-    }*/
+    }
 }

@@ -80,8 +80,9 @@ public class MemberService {
 
     //it added a member to the trainer once i run the trainers route but the response entity doesn't show it but
     //there is also other problems
-    /*public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId){
-        Trainer trainer = trainerService.getTrainerById2(trainerId);
+    public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId){
+
+        /*Trainer trainer = trainerService.getTrainerById2(trainerId);
         if(trainer==null){
             throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
         }
@@ -94,8 +95,26 @@ public class MemberService {
 
         trainerRepository.save(trainer);
         memberRepository.save(member);
+        return new MemberDTO(member);*/
+
+
+        //this adds a member inside the trainer class, but in the member class there is not trainer object
+        Optional<Trainer> trainer = trainerRepository.findById(trainerId);
+        if(trainer.isEmpty()){
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
+        }
+        Member member=getMemberById2(memberId);
+        List<Member> members = trainer.get().getMembers();
+        members.add(member);
+        trainer.get().setMembers(members);
+        trainerRepository.save(trainer.get());
+
+        //this is the problem
+       // member.setTrainer(trainer.get());
+
+        memberRepository.save(member);
         return new MemberDTO(member);
-    }*/
+    }
 
 
 
@@ -112,6 +131,9 @@ public class MemberService {
              Trainer newTrainer=trainerService.getTrainerById2(trainerId);
              member.setTrainer(newTrainer);
 
+             Member member2=memberRepository.save(member);
+             addMemberToTrainer(member2.getId(),trainerId );
+
          }
 
          memberRepository.save(member);
@@ -119,8 +141,8 @@ public class MemberService {
          userRepository.save(member);
 
 
-         Member member2=memberRepository.save(member);
-         addMemberToTrainer(member2.getId(),trainerId );
+        /* Member member2=memberRepository.save(member);
+         addMemberToTrainer(member2.getId(),trainerId );*/
 
         return new MemberDTO(member);
 
