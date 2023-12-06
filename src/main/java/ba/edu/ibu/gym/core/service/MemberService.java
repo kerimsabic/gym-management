@@ -75,10 +75,27 @@ public class MemberService {
         List<Member> members = trainer.get().getMembers();
         members.add(member);
         trainer.get().setMembers(members);
-        //ovdje je sejvano treba samo memberDTO popravit
         trainerRepository.save(trainer.get());
-       // return new TrainerDTO(trainer.get());
     }
+
+    //it added a member to the trainer once i run the trainers route but the response entity doesn't show it but
+    //there is also other problems
+    /*public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId){
+        Trainer trainer = trainerService.getTrainerById2(trainerId);
+        if(trainer==null){
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
+        }
+        Member member=getMemberById2(memberId);
+        List<Member> members = trainer.getMembers();
+        members.add(member);
+        trainer.setMembers(members);
+
+        member.setTrainer(trainer);
+
+        trainerRepository.save(trainer);
+        memberRepository.save(member);
+        return new MemberDTO(member);
+    }*/
 
 
 
@@ -86,7 +103,7 @@ public class MemberService {
 
         String trainerId=payload.getTrainerId();
         Member member = payload.toEntity();
-        String memberId= payload.getTrainerId();
+        String memberId= payload.getTrainerId(); // not used delete this
 
         member.setUserType(UserType.MEMBER);
 
@@ -95,8 +112,6 @@ public class MemberService {
              Trainer newTrainer=trainerService.getTrainerById2(trainerId);
              member.setTrainer(newTrainer);
 
-
-             //memberRepository.save(member);
          }
 
          memberRepository.save(member);
