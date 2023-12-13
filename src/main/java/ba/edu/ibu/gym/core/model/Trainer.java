@@ -26,5 +26,11 @@ public class Trainer extends User{
       //  return userType;
     //}
 
+    public void removeMember(Member member) {
+        if (members != null) {
+            members.remove(member);
+        }
+    }
+
 
 }

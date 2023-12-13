@@ -78,12 +78,8 @@ public class MemberService {
         trainerRepository.save(trainer.get());
     }
 
-    //it added a member to the trainer once i run the trainers route but the response entity doesn't show it but
-    //there is also other problems
     public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId){
 
-
-        //this adds a member inside the trainer class, but in the member class there is not trainer object
         Optional<Trainer> trainer = trainerRepository.findById(trainerId);
         if(trainer.isEmpty()){
             throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
@@ -97,9 +93,33 @@ public class MemberService {
         Trainer newTrainer= trainerService.getTrainerById2(trainerId);
         member.setTrainer(newTrainer);
 
-        //this was the problem
-        //member.setTrainer(trainer.get());
+        memberRepository.save(member);
+        return new MemberDTO(member);
+    }
 
+    public MemberDTO removeMemberFromTrainer(String memberId, String trainerId){
+
+        Optional<Trainer> trainer = trainerRepository.findById(trainerId);
+        if(trainer.isEmpty()){
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
+        }
+
+        Member member=getMemberById2(memberId);
+
+        Trainer newTrainer= trainer.get();
+
+        List<Member> members = newTrainer.getMembers();
+        newTrainer.removeMember(member);
+       // members.remove(member);
+
+
+        //trainer.get().setMembers(members);
+       // trainerRepository.save(trainer.get());
+
+        newTrainer.setMembers(members);
+        member.setTrainer(null);
+
+        trainerRepository.save(newTrainer);
         memberRepository.save(member);
         return new MemberDTO(member);
     }
