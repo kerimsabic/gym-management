@@ -82,21 +82,6 @@ public class MemberService {
     //there is also other problems
     public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId){
 
-        /*Trainer trainer = trainerService.getTrainerById2(trainerId);
-        if(trainer==null){
-            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
-        }
-        Member member=getMemberById2(memberId);
-        List<Member> members = trainer.getMembers();
-        members.add(member);
-        trainer.setMembers(members);
-
-        member.setTrainer(trainer);
-
-        trainerRepository.save(trainer);
-        memberRepository.save(member);
-        return new MemberDTO(member);*/
-
 
         //this adds a member inside the trainer class, but in the member class there is not trainer object
         Optional<Trainer> trainer = trainerRepository.findById(trainerId);
@@ -109,8 +94,11 @@ public class MemberService {
         trainer.get().setMembers(members);
         trainerRepository.save(trainer.get());
 
-        //this is the problem
-       // member.setTrainer(trainer.get());
+        Trainer newTrainer= trainerService.getTrainerById2(trainerId);
+        member.setTrainer(newTrainer);
+
+        //this was the problem
+        //member.setTrainer(trainer.get());
 
         memberRepository.save(member);
         return new MemberDTO(member);
