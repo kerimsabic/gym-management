@@ -9,10 +9,10 @@ public class UserRequestDTO {
     private String lastName;
     private String email;
     private String password;
+    private String username;
     private UserType userType;
     private String phone;
     private String address;
-    private User trainer;
     private String image;
 
 
@@ -26,8 +26,8 @@ public class UserRequestDTO {
         this.userType = user.getUserType();
         this.phone=user.getPhone();
         this.address=user.getAddress();
-        this.trainer=user.getTrainer();
         this.image=user.getImage();
+        this.username= user.getUsername();
     }
     public User toEntity(){
         User user= new User();
@@ -38,8 +38,8 @@ public class UserRequestDTO {
         user.setUserType(userType);
         user.setAddress(address);
         user.setPhone(phone);
-        user.setTrainer(trainer);
         user.setImage(image);
+        user.setUsername(username);
         return user;
     }
 
@@ -75,13 +75,7 @@ public class UserRequestDTO {
         this.password = password;
     }
 
-    public UserType getUserType() {
-        return userType;
-    }
 
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
 
     public String getAddress() {
         return address;
@@ -99,13 +93,6 @@ public class UserRequestDTO {
         this.phone = phone;
     }
 
-    public User getTrainer() {
-        return trainer;
-    }
-
-    public void setTrainer(User trainer) {
-        this.trainer = trainer;
-    }
 
     public String getImage() {
         return image;
@@ -113,5 +100,21 @@ public class UserRequestDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 }

@@ -4,6 +4,7 @@ import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.Equipment;
 import ba.edu.ibu.gym.core.repository.EquipmentRepository;
 import ba.edu.ibu.gym.rest.dto.EquipmentRequestDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,7 +12,8 @@ import java.util.Optional;
 
 @Service
 public class EquipmentService {
-    private final EquipmentRepository equipmentRepository;
+    public EquipmentRepository equipmentRepository;
+
 
 
     public EquipmentService(EquipmentRepository equipmentRepository) {

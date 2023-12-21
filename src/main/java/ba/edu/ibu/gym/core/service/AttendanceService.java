@@ -1,73 +1,57 @@
 package ba.edu.ibu.gym.core.service;
 
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
-import ba.edu.ibu.gym.core.model.Attendance;
-import ba.edu.ibu.gym.core.model.TrainingPlan;
-import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.*;
 import ba.edu.ibu.gym.core.repository.AttendanceRepository;
-import ba.edu.ibu.gym.core.repository.UserRepository;
-import ba.edu.ibu.gym.rest.dto.AttendenceRequestDTO;
-import ba.edu.ibu.gym.rest.dto.PlanRequestDTO;
-import org.springframework.http.ResponseEntity;
+import ba.edu.ibu.gym.rest.dto.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class AttendanceService {
-    private final AttendanceRepository attendanceRepository;
-    private final UserRepository userRepository;    //need this so I can add existing user instead of regular String
 
-    public AttendanceService(AttendanceRepository attendanceRepository,UserRepository userRepository) {
-        this.attendanceRepository = attendanceRepository;
-        this.userRepository=userRepository;
+    private AttendanceRepository attendanceRepository;
+    private MemberService memberService;
+
+    public AttendanceService(AttendanceRepository attendanceRepository, MemberService memberService){
+        this.attendanceRepository=attendanceRepository;
+        this.memberService=memberService;
     }
 
-    public List<Attendance> getAll(){
-        return attendanceRepository.findAll();
+    public List<AttendanceDTO> getAllAttendance(){
+        List<Attendance> attendances = attendanceRepository.findAll();
+        return attendances
+                .stream()
+                .map(AttendanceDTO::new)
+                .collect(toList());
     }
 
-    public Attendance getAttendenceById(String id) {
+    public AttendanceDTO getAttendanceById(String id){
         Optional<Attendance> attendance = attendanceRepository.findById(id);
-        if (attendance.isEmpty()) {
-            throw new ResourceNotFoundException("Attendance with the given ID does not exist.");
-
+        if(attendance.isEmpty()){
+            throw new ResourceNotFoundException("Attendance  with the given ID does not exist.");
         }
-        return attendance.get();
+        return new AttendanceDTO(attendance.get());
     }
 
-    public Attendance createAttendance(AttendenceRequestDTO attendenceRequestDTO) {
-        String userId = attendenceRequestDTO.getMemberId();
-        Date date = new Date();
+    public AttendanceDTO recordAttendance(AttendanceRequestDTO payload){
 
-        Optional<User> user=userRepository.findById(userId);
-        if (user == null) {
-            throw new ResourceNotFoundException("Attendance with the given ID does not exist.");
-        }
-        Attendance attendance = new Attendance();
-        attendance.setMemberId(user.get().getId());
-        attendance.setAttendanceDate(date);
+        String memberId= payload.getMemberId();
 
-         attendance = attendanceRepository.save(attendenceRequestDTO.toEntity());
-        return attendance;
+        Member member= memberService.getMemberById2(memberId);
+
+        Attendance attendance= payload.toEntity();
+        attendance.setMember(member);
+
+        attendanceRepository.save(attendance);
+        return new AttendanceDTO(attendance);
     }
 
-
-  /*   No need to update attendece
-  public Attendance updateAttendece(String id, AttendenceRequestDTO attendenceRequestDTO) {
-        Optional<Attendance> attendance = attendanceRepository.findById(id);
-        if (attendance.isEmpty()) {
-            //throw new exception;
-        }
-        Attendance updatatedAttendence = attendenceRequestDTO.toEntity();
-        updatatedAttendence.setId(attendance.get().getId());
-        updatatedAttendence = attendanceRepository.save(updatatedAttendence);
-        return updatatedAttendence;
-    }*/
-
-    public void deleteAttendence(String id) {
+    public void deleteAttendance(String id) {
         Optional<Attendance> attendance = attendanceRepository.findById(id);
         attendance.ifPresent(attendanceRepository::delete);
 

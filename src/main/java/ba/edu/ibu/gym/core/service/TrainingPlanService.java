@@ -12,7 +12,9 @@ import java.util.Optional;
 
 @Service
 public class TrainingPlanService {
-    private final TrainingPlanRepository trainingPlanRepository;
+    private TrainingPlanRepository trainingPlanRepository;
+
+
 
     public TrainingPlanService(TrainingPlanRepository trainingPlanRepository) {
         this.trainingPlanRepository = trainingPlanRepository;

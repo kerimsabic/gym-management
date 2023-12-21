@@ -2,9 +2,13 @@ package ba.edu.ibu.gym.core.service;
 
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
 import ba.edu.ibu.gym.rest.dto.UserRequestDTO;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +19,7 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private  UserRepository userRepository;
 
    /* The first method of implemetation, need to comment out conditional property in both senders
     @Autowired
@@ -25,6 +29,8 @@ public class UserService {
 
    /* @Autowired
     private MailSender mailSender;*/
+
+
 
 
     public UserService(UserRepository userRepository) {
@@ -49,6 +55,7 @@ public class UserService {
 
     public UserDTO addUser(UserRequestDTO payload) {
         User user = userRepository.save(payload.toEntity());
+        user.setUserType(UserType.ADMIN);
         return new UserDTO(user);
     }
 
@@ -67,6 +74,19 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         user.ifPresent(userRepository::delete);
     }
+
+
+
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return userRepository.findByUsernameOrEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+            }
+        };
+    }
+
 
 
 

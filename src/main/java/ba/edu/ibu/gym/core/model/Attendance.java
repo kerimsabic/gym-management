@@ -1,5 +1,7 @@
 package ba.edu.ibu.gym.core.model;
 
+import ba.edu.ibu.gym.rest.dto.MemberDTO;
+import ba.edu.ibu.gym.rest.dto.UserDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -7,10 +9,24 @@ import java.util.Date;
 
 @Document
 public class Attendance {
+
     @Id
     private String id;
+
     private Date attendanceDate;
-    private String memberId;
+    private Member member;
+
+
+    public Attendance(String id, Date attendanceDate, Member member) {
+        this.id = id;
+        this.attendanceDate = attendanceDate;
+        this.member = member;
+    }
+
+    public Attendance(){}
+
+
+
 
     public String getId() {
         return id;
@@ -28,11 +44,11 @@ public class Attendance {
         this.attendanceDate = attendanceDate;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setMember(Member member) {
+        this.member = member;
     }
 }
