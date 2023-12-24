@@ -42,4 +42,6 @@ public class Member extends User{
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
     }
+
+
 }

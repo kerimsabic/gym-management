@@ -75,9 +75,53 @@ public class MemberService {
         List<Member> members = trainer.get().getMembers();
         members.add(member);
         trainer.get().setMembers(members);
-        //ovdje je sejvano treba samo memberDTO popravit
         trainerRepository.save(trainer.get());
-       // return new TrainerDTO(trainer.get());
+    }
+
+    public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId){
+
+        Optional<Trainer> trainer = trainerRepository.findById(trainerId);
+        if(trainer.isEmpty()){
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
+        }
+        Member member=getMemberById2(memberId);
+        List<Member> members = trainer.get().getMembers();
+        members.add(member);
+        trainer.get().setMembers(members);
+        trainerRepository.save(trainer.get());
+
+        Trainer newTrainer= trainerService.getTrainerById2(trainerId);
+        member.setTrainer(newTrainer);
+
+        memberRepository.save(member);
+        return new MemberDTO(member);
+    }
+
+    public MemberDTO removeMemberFromTrainer(String memberId, String trainerId){
+
+        Optional<Trainer> trainer = trainerRepository.findById(trainerId);
+        if(trainer.isEmpty()){
+            throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
+        }
+
+        Member member=getMemberById2(memberId);
+
+        Trainer newTrainer= trainer.get();
+
+        List<Member> members = newTrainer.getMembers();
+        newTrainer.removeMember(member);
+       // members.remove(member);
+
+
+        //trainer.get().setMembers(members);
+       // trainerRepository.save(trainer.get());
+
+        newTrainer.setMembers(members);
+        member.setTrainer(null);
+
+        trainerRepository.save(newTrainer);
+        memberRepository.save(member);
+        return new MemberDTO(member);
     }
 
 
@@ -86,7 +130,7 @@ public class MemberService {
 
         String trainerId=payload.getTrainerId();
         Member member = payload.toEntity();
-        String memberId= payload.getTrainerId();
+        String memberId= payload.getTrainerId(); // not used delete this
 
         member.setUserType(UserType.MEMBER);
 
@@ -95,8 +139,9 @@ public class MemberService {
              Trainer newTrainer=trainerService.getTrainerById2(trainerId);
              member.setTrainer(newTrainer);
 
+             Member member2=memberRepository.save(member);
+             addMemberToTrainer(member2.getId(),trainerId );
 
-             //memberRepository.save(member);
          }
 
          memberRepository.save(member);
@@ -104,8 +149,8 @@ public class MemberService {
          userRepository.save(member);
 
 
-         Member member2=memberRepository.save(member);
-         addMemberToTrainer(member2.getId(),trainerId );
+        /* Member member2=memberRepository.save(member);
+         addMemberToTrainer(member2.getId(),trainerId );*/
 
         return new MemberDTO(member);
 

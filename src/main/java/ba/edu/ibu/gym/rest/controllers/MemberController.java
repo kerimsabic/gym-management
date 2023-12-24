@@ -56,4 +56,16 @@ public class MemberController {
         memberService.deleteMembers(id);
         return null;
     }
+
+    @RequestMapping(method = RequestMethod.PUT,path = "setTrainer/{id}/{id2}")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public ResponseEntity<MemberDTO> addMembertToTrainerSpecial(@RequestParam String memberId,@RequestParam String trainerId){
+        return ResponseEntity.ok(memberService.addMemberToTrainerSpecial(memberId,trainerId));
+    }
+
+    @RequestMapping(method = RequestMethod.PUT,path = "removeTrainer/{id}/{id2}")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public ResponseEntity<MemberDTO> removeMemberFromTrainer(@RequestParam String memberId,@RequestParam String trainerId){
+        return ResponseEntity.ok(memberService.removeMemberFromTrainer(memberId,trainerId));
+    }
 }
