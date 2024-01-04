@@ -57,5 +57,6 @@ public class EquipmentControllerTest {
         String response = result.getResponse().getContentAsString();
         System.out.println(response);
 
+
     }
 }

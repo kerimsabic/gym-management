@@ -1,6 +1,7 @@
 package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 
 public class UserDTO {
@@ -11,6 +12,9 @@ public class UserDTO {
     private String email;
     private String username;
     private String image;
+    private String address;
+    private StatusType statusType;
+    private String phone;
 
 
     public UserDTO(User user) {
@@ -21,6 +25,10 @@ public class UserDTO {
         this.email = user.getEmail();
         this.image=user.getImage();
         this.username=user.getUsername();
+        this.statusType=user.getStatusType();
+        this.address=user.getAddress();
+        this.phone=user.getPhone();
+
     }
 
     public String getEmail() {
@@ -63,7 +71,29 @@ public class UserDTO {
         this.id = id;
     }
 
+    public StatusType getStatusType() {
+        return statusType;
+    }
 
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getImage() {
         return image;

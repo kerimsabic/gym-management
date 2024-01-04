@@ -5,12 +5,14 @@ import ba.edu.ibu.gym.core.model.enums.UserType;
 
 public class MemberDTO extends UserDTO{
     private String qrCode;
-
     private String trainerEmail;
     private String TrainerImage;
     private String trainerName;
     private String trainerId;
     private UserType trainerUserType;
+
+    private  String trainingPlanId;
+    private  String trainingPlanName;
 
 
 
@@ -26,6 +28,8 @@ public class MemberDTO extends UserDTO{
             this.trainerId = member.getTrainer().getId();
             this.trainerUserType = member.getTrainer().getUserType();
         }
+        this.trainingPlanId=member.getTrainingPlan().getId();
+        this.trainingPlanName=member.getTrainingPlan().getName();
 
 
     }
@@ -96,4 +100,19 @@ public class MemberDTO extends UserDTO{
         this.trainerUserType = trainerUserType;
     }
 
+    public void setTrainingPlanId(String trainingPlanId) {
+        this.trainingPlanId = trainingPlanId;
+    }
+
+    public String getTrainingPlanId() {
+        return trainingPlanId;
+    }
+
+    public void setTrainingPlanName(String trainingPlanName) {
+        this.trainingPlanName = trainingPlanName;
+    }
+
+    public String getTrainingPlanName() {
+        return trainingPlanName;
+    }
 }

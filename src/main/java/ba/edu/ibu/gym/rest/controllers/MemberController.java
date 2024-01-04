@@ -15,7 +15,7 @@ import java.sql.SQLOutput;
 import java.util.List;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/api/members")
 @SecurityRequirement(name = "JWT Security")
 public class MemberController {
     private final MemberService memberService;

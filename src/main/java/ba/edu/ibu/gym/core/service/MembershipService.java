@@ -5,10 +5,12 @@ import ba.edu.ibu.gym.core.model.Attendance;
 import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.Membership;
 import ba.edu.ibu.gym.core.model.TrainingPlan;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.repository.MembershipRepository;
 import ba.edu.ibu.gym.rest.dto.*;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -68,12 +70,54 @@ public class MembershipService {
         calendar.add(Calendar.MONTH, durationInMonths);
         Date endDate = calendar.getTime();
 
+        Date currentDate = new Date();
+
+        if(endDate.before(currentDate)){
+            membership.setStatusType(StatusType.OFFLINE);
+        }
+        else{
+            membership.setStatusType(StatusType.ONLINE);
+        }
+
         membership.setMember(member);
         membership.setTrainingPlan(trainingPlan);
         membership.setEndDate(endDate);
 
         membershipRepository.save(membership);
         return new MembershipDTO(membership);
+    }
+
+    public Membership createMembershipOnMemberCreation(String memberId, Integer numOfMonths, String trainingPlanId){
+
+        Member member= memberService.getMemberById2(memberId);
+        TrainingPlan trainingPlan=trainingPlanService.getPlanById(trainingPlanId);
+
+        Membership membership= new Membership();
+
+        membership.setMember(member);
+        membership.setTrainingPlan(trainingPlan);
+
+
+        Date startDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);                            //used to calculate the end date based on provided number of months
+        calendar.add(Calendar.MONTH, numOfMonths);
+        Date endDate = calendar.getTime();
+
+        Date currentDate = new Date();
+
+        if(endDate.before(currentDate)){
+            membership.setStatusType(StatusType.OFFLINE);
+        }
+        else{
+            membership.setStatusType(StatusType.ONLINE);
+        }
+
+        membership.setStartDate(startDate);
+        membership.setEndDate(endDate);
+
+        membershipRepository.save(membership);
+        return membership;
     }
 
 

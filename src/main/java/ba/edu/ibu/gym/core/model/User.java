@@ -1,6 +1,7 @@
 package ba.edu.ibu.gym.core.model;
 
 
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -24,8 +25,9 @@ public class User implements UserDetails {
     private String phone;
     private String address;
     private String image;
+    private StatusType statusType;
 
-    public User(String id, String firstName, String lastName, String password, String email, String username, String phone, String address, String image) {
+    public User(String id, String firstName, String lastName, String password, String email, String username, String phone, String address, String image, StatusType statusType) {
         this.id = id;
         this.userType = userType;
         this.firstName = firstName;
@@ -36,6 +38,7 @@ public class User implements UserDetails {
         this.phone = phone;
         this.address = address;
         this.image = image;
+        this.statusType=statusType;
     }
 
     public User (){}
@@ -127,6 +130,13 @@ public class User implements UserDetails {
         return username;
     }
 
+    public StatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -2,6 +2,7 @@ package ba.edu.ibu.gym.core.service;
 
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
@@ -56,6 +57,7 @@ public class UserService {
     public UserDTO addUser(UserRequestDTO payload) {
         User user = userRepository.save(payload.toEntity());
         user.setUserType(UserType.ADMIN);
+        user.setStatusType(StatusType.ONLINE);
         return new UserDTO(user);
     }
 

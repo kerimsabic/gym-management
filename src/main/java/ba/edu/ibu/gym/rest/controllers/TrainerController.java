@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/trainers")
+@RequestMapping("/api/trainers")
 @SecurityRequirement(name = "JWT Security")
 public class TrainerController {
 

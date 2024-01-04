@@ -1,5 +1,6 @@
 package ba.edu.ibu.gym.core.model;
 
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,8 @@ public class TrainingPlanTest {
                 "someId",
                 "testTrainingPlan",
                 "created for testing purpose",
-                "60$"
+                "60$",
+                StatusType.ONLINE
         );
 
         Assertions.assertEquals("testTrainingPlan",trainingPlan.getName());

@@ -3,6 +3,8 @@ package ba.edu.ibu.gym.core.service;
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.Trainer;
+import ba.edu.ibu.gym.core.model.TrainingPlan;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.MemberRepository;
 import ba.edu.ibu.gym.core.repository.TrainerRepository;
@@ -23,14 +25,16 @@ public class MemberService {
     private TrainerService trainerService;
     private UserRepository userRepository;
     private TrainerRepository trainerRepository;
+    private TrainingPlanService trainingPlanService;
 
 
 
-    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository) {
+    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository,TrainingPlanService trainingPlanService) {
         this.memberRepository = memberRepository;
         this.userRepository=userRepository;
         this.trainerService=trainerService;
         this.trainerRepository=trainerRepository;
+        this.trainingPlanService=trainingPlanService;
     }
 
     public List<MemberDTO> getMembers() {
@@ -130,9 +134,12 @@ public class MemberService {
 
         String trainerId=payload.getTrainerId();
         Member member = payload.toEntity();
-        String memberId= payload.getTrainerId(); // not used delete this
+        String trainingPlanId= payload.getTrainingPlanId();
+         System.out.println(payload.getTrainingPlanId()+"   "+ payload.getTrainerId());
+
 
         member.setUserType(UserType.MEMBER);
+        //member.setStatusType(StatusType.ONLINE);
 
          if (trainerId != null) {
 
@@ -143,6 +150,8 @@ public class MemberService {
              addMemberToTrainer(member2.getId(),trainerId );
 
          }
+         TrainingPlan trainingPlan=trainingPlanService.getPlanById(trainingPlanId);
+         member.setTrainingPlan(trainingPlan);
 
          memberRepository.save(member);
 

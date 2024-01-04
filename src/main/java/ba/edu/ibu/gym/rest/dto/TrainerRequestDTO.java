@@ -10,8 +10,6 @@ import java.util.List;
 public class TrainerRequestDTO extends UserRequestDTO{
     private List<Member> members;
 
-
-
     public  TrainerRequestDTO() { }
 
     public TrainerRequestDTO(Trainer trainer) {

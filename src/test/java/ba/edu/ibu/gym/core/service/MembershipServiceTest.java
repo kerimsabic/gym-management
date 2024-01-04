@@ -4,6 +4,7 @@ import ba.edu.ibu.gym.core.model.Equipment;
 import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.Membership;
 import ba.edu.ibu.gym.core.model.TrainingPlan;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.EquipmentRepository;
 import ba.edu.ibu.gym.core.repository.MembershipRepository;
@@ -42,7 +43,8 @@ public class MembershipServiceTest {
                 "someId2",
                 "testTrainingPlan",
                 "created for testing purpose",
-                "60$"
+                "60$",
+                StatusType.ONLINE
         );
 
         Member member1 = new Member();
@@ -59,7 +61,8 @@ public class MembershipServiceTest {
                 member1,
                 date1,
                 date2,
-                trainingPlan
+                trainingPlan,
+                StatusType.ONLINE
         );
 
         Mockito.when(membershipRepository.findById("someId")).thenReturn(Optional.of(membership));

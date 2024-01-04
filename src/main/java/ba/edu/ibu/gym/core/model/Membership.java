@@ -1,5 +1,6 @@
 package ba.edu.ibu.gym.core.model;
 
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,14 +15,16 @@ public class Membership {
     private Date startDate;
     private Date endDate;
     private TrainingPlan trainingPlan;
+    private StatusType statusType;
 
 
-    public Membership(String id, Member member, Date startDate, Date endDate, TrainingPlan trainingPlan) {
+    public Membership(String id, Member member, Date startDate, Date endDate, TrainingPlan trainingPlan, StatusType statusType) {
         this.id = id;
         this.member = member;
         this.startDate = startDate;
         this.endDate = endDate;
         this.trainingPlan = trainingPlan;
+        this.statusType=statusType;
     }
 
     public Membership(){}
@@ -64,5 +67,13 @@ public class Membership {
 
     public void setTrainingPlan(TrainingPlan trainingPlan) {
         this.trainingPlan = trainingPlan;
+    }
+
+    public StatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
     }
 }

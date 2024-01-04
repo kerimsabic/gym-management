@@ -1,10 +1,7 @@
 package ba.edu.ibu.gym.rest.controllers;
 
 import ba.edu.ibu.gym.core.service.AuthService;
-import ba.edu.ibu.gym.rest.dto.LoginDTO;
-import ba.edu.ibu.gym.rest.dto.LoginRequestDTO;
-import ba.edu.ibu.gym.rest.dto.UserDTO;
-import ba.edu.ibu.gym.rest.dto.UserRequestDTO;
+import ba.edu.ibu.gym.rest.dto.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +20,10 @@ public class AuthController {
     @RequestMapping(method = RequestMethod.POST, path = "/register")
     public ResponseEntity<UserDTO> register(@RequestBody UserRequestDTO user) {
         return ResponseEntity.ok(authService.signUp(user));
+    }
+    @RequestMapping(method = RequestMethod.POST, path = "/registerMember")
+    public ResponseEntity<MemberDTO> registerMember(@RequestBody MemberRequestDTO member) {
+        return ResponseEntity.ok(authService.signUpMember(member));
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/login")
