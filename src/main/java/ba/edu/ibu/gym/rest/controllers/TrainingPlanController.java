@@ -46,7 +46,7 @@ public class TrainingPlanController {
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteTrainingPlan(@RequestParam String id){
+    public ResponseEntity<Void> deleteTrainingPlan(@PathVariable String id){
         trainingPlanService.deleteTrainingPlan(id);
         return null;
     }
