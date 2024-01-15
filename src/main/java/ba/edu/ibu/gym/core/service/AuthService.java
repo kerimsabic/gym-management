@@ -73,6 +73,16 @@ public class AuthService {
         return new UserDTO(user);
     }
 
+    public UserDTO signUpAdmin(UserRequestDTO userRequestDTO) {
+        userRequestDTO.setPassword(
+                passwordEncoder.encode(userRequestDTO.getPassword())
+        );
+        User user = userRequestDTO.toEntity();
+        userRepository.save(user);
+        user.setUserType(UserType.ADMIN);
+        return new UserDTO(user);
+    }
+
     public MemberDTO signUpMember(MemberRequestDTO memberRequestDTO) {
         memberRequestDTO.setPassword(
                 passwordEncoder.encode(memberRequestDTO.getPassword())

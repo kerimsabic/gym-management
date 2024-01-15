@@ -26,6 +26,11 @@ public class AuthController {
         return ResponseEntity.ok(authService.signUpMember(member));
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/registerAdmin")
+    public ResponseEntity<UserDTO> registerAdmin(@RequestBody UserRequestDTO member) {
+        return ResponseEntity.ok(authService.signUpAdmin(member));
+    }
+
     @RequestMapping(method = RequestMethod.POST, path = "/login")
     public ResponseEntity<LoginDTO> login(@RequestBody LoginRequestDTO loginRequest) {
         return ResponseEntity.ok(authService.signIn(loginRequest));

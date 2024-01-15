@@ -27,6 +27,12 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/admins")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    public ResponseEntity<List<UserDTO>> getAdmins() {
+        return ResponseEntity.ok(userService.getUserAdmins());
+    }
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {

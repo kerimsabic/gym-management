@@ -46,6 +46,11 @@ public class UserService {
                 .collect(toList());
     }
 
+    public List<UserDTO> getUserAdmins(){
+        List<User> adminUsers = userRepository.findByUserType(UserType.ADMIN);
+        return  adminUsers.stream().map(UserDTO::new).collect(toList());
+    }
+
     public UserDTO getUserById(String id){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
