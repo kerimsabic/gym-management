@@ -73,7 +73,13 @@ public class TrainerService {
         if(trainer.isEmpty()){
             throw new ResourceNotFoundException("The trainer with the given ID does not exist.");
         }
+        Trainer existingTrainer=trainer.get();
         Trainer updatedTrainer= payload.toEntity();
+
+        if(updatedTrainer.getPassword()==null || updatedTrainer.getPassword().isEmpty()){
+            updatedTrainer.setPassword(existingTrainer.getPassword());
+        }
+
         updatedTrainer.setId(trainer.get().getId());
         updatedTrainer=trainerRepository.save(updatedTrainer);
         userRepository.save(updatedTrainer);

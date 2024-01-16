@@ -26,7 +26,7 @@ public class TrainerRequestDTO extends UserRequestDTO{
         trainer.setImage(this.getImage());
         trainer.setPassword(this.getPassword());
         trainer.setPhone(this.getPhone());
-       // trainer.setUserType(UserType.TRAINER);
+        trainer.setUserType(UserType.TRAINER);
         trainer.setMembers(members);
         return trainer;
     }

@@ -46,14 +46,17 @@ public class AuthService {
         this.membershipRepository=membershipRepository;
     }
 
-    public UserDTO signUp(UserRequestDTO userRequestDTO) {
-        userRequestDTO.setPassword(
-                passwordEncoder.encode(userRequestDTO.getPassword())
+    public TrainerDTO signUp(TrainerRequestDTO trainerRequestDTO) {
+        trainerRequestDTO.setPassword(
+                passwordEncoder.encode(trainerRequestDTO.getPassword())
         );
-        User user = userRequestDTO.toEntity();
+        Trainer user = trainerRequestDTO.toEntity();
+        user.setUserType(UserType.TRAINER);
+        trainerRepository.save(user);
         userRepository.save(user);
 
-        if (user.getUserType().equals(UserType.TRAINER)) {
+
+       /* if (user.getUserType().equals(UserType.TRAINER)) {
             Trainer trainer=new Trainer();
             trainer.setId(user.getId());
             trainer.setFirstName(user.getFirstName());
@@ -66,11 +69,11 @@ public class AuthService {
             trainer.setUsername(user.getUsername());
             trainer.setMembers(new ArrayList<Member>());
             trainerRepository.save(trainer);
-        }
+        }*/
 
         //moras popravit trainer value u memberima da moze trainer biti null
 
-        return new UserDTO(user);
+        return new TrainerDTO(user);
     }
 
     public UserDTO signUpAdmin(UserRequestDTO userRequestDTO) {
