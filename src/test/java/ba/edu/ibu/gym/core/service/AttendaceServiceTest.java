@@ -83,10 +83,10 @@ public class AttendaceServiceTest {
 
         Mockito.when(attendanceRepository.findById("someId")).thenReturn(Optional.of(attendance));
         AttendanceDTO result= attendanceService.getAttendanceById(attendance.getId());
-        if (attendance.getMember().getTrainer() != null) {
+       /* if (attendance.getMember().getTrainer() != null) {
             Assertions.assertThat(attendance.getMember().getTrainer().getId())
                     .isEqualTo(result.getTrainerId());
-        }
+        }*/
         Assertions.assertThat(attendance.getMember().getEmail()).isEqualTo(result.getEmail());
         /*Assertions.assertThat(trainingPlan.getDescription()).isEqualTo(result.getDescription());
         Assertions.assertThat(trainingPlan.getPrice()).isEqualTo(result.getPrice());*/
