@@ -48,6 +48,47 @@ public class MembershipService {
         }
         return new MembershipDTO(membership.get());
     }
+    public MembershipDTO getMembershipByMemberId(String id){
+        Optional<Membership> membership = membershipRepository.findMembershipByMember_Id(id);
+        if(membership.isEmpty()){
+            throw new ResourceNotFoundException("The membership with the given ID does not exist.");
+        }
+        return new MembershipDTO(membership.get());
+    }
+
+    public MembershipDTO updateMemberMembership(String id, MembershipRequestDTO payload){
+
+        Optional<Membership> membership=membershipRepository.findById(id);
+        Member member= memberService.getMemberById2(payload.getMemberId());
+        TrainingPlan trainingPlan=trainingPlanService.getPlanById(payload.getTrainingPlanId());
+        if(membership.isEmpty()){
+            throw new ResourceNotFoundException("The membership with the given ID does not exist.");
+        }
+
+        membership.get().setMember(member);
+        membership.get().setTrainingPlan(trainingPlan);
+
+
+        Date startDate = new Date();
+        int durationInMonths = payload.getNumOfMonths();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);                            //used to calculate the end date based on provided number of months
+        calendar.add(Calendar.MONTH, durationInMonths);
+        Date endDate = calendar.getTime();
+
+        membership.get().setEndDate(endDate);
+
+        Date currentDate = new Date();
+        if(endDate.before(currentDate)){
+            membership.get().setStatusType(StatusType.OFFLINE);
+        }
+        else{
+            membership.get().setStatusType(StatusType.ONLINE);
+        }
+        membershipRepository.save(membership.get());
+
+        return new MembershipDTO(membership.get());
+    }
 
     public MembershipDTO createMembership(MembershipRequestDTO payload){
 
@@ -87,7 +128,7 @@ public class MembershipService {
         return new MembershipDTO(membership);
     }
 
-    public Membership createMembershipOnMemberCreation(String memberId, Integer numOfMonths, String trainingPlanId){
+    public Membership createMembershipOnMemberCreation(String memberId, int numOfMonths, String trainingPlanId){
 
         Member member= memberService.getMemberById2(memberId);
         TrainingPlan trainingPlan=trainingPlanService.getPlanById(trainingPlanId);

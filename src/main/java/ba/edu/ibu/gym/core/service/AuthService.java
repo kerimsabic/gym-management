@@ -87,6 +87,7 @@ public class AuthService {
     }
 
     public MemberDTO signUpMember(MemberRequestDTO memberRequestDTO) {
+        System.out.println(memberRequestDTO.getNumOfMonths());
         memberRequestDTO.setPassword(
                 passwordEncoder.encode(memberRequestDTO.getPassword())
         );
@@ -101,17 +102,21 @@ public class AuthService {
         }
         member.setTrainingPlan(trainingPlan);
         member.setUserType(UserType.MEMBER);
-        Integer num=memberRequestDTO.getNumOfMonths();
+
 
         memberRepository.save(member);
         userRepository.save(member);
 
         if(member!=null && member.getId()!=null){           //if member successfully saved to the database
+            int num=memberRequestDTO.getNumOfMonths();
             String memberId=member.getId();
             Membership membership=membershipService.createMembershipOnMemberCreation(memberId,num,trainingPlanId);
             membershipRepository.save(membership);
+            System.out.println(membership.getEndDate());
         }
 
+        memberRepository.save(member);
+        userRepository.save(member);
 
         return new MemberDTO(member);
     }

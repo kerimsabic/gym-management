@@ -12,7 +12,6 @@ public class Member extends User{
     private Trainer trainer;
     private String qrCode;
     private TrainingPlan trainingPlan;
-
     private Membership membership;
 
     public Member( Trainer trainer, String qrCode, TrainingPlan trainingPlan, Membership membership) {

@@ -7,13 +7,13 @@ public class MemberRequestDTO extends UserRequestDTO {
     private String qrCode;
     private String trainerId;
     private String trainingPlanId;
-    private Integer numOfMonths;
+    private int numOfMonths;
 
     public MemberRequestDTO(){
 
     }
 
-    public MemberRequestDTO(Member member, String trainerId, String trainingPlanId, Integer numOfMonths){
+    public MemberRequestDTO(Member member, String trainerId, String trainingPlanId, int numOfMonths){
         super(member);
         this.qrCode=member.getQrCode();
         this.trainerId=trainerId;
@@ -69,11 +69,11 @@ public class MemberRequestDTO extends UserRequestDTO {
         return trainingPlanId;
     }
 
-    public void setNumOfMonths(Integer numOfMonths) {
+    public void setNumOfMonths(int numOfMonths) {
         this.numOfMonths = numOfMonths;
     }
 
-    public Integer getNumOfMonths() {
+    public int getNumOfMonths() {
         return numOfMonths;
     }
 }
