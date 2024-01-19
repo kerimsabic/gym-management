@@ -16,6 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -34,6 +39,7 @@ public class MemberService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
 
 
@@ -57,6 +63,29 @@ public class MemberService {
                 .collect(toList());
     }
 
+    public List<MemberDTO> getOnlineMembers() {
+        List<Member> members = memberRepository.findByStatusType(StatusType.ONLINE);
+        return members
+                .stream()
+                .map(MemberDTO::new)
+                .collect(toList());
+    }
+    public List<MemberDTO> getOfflineMembers() {
+        List<Member> members = memberRepository.findByStatusType(StatusType.OFFLINE);
+        return members
+                .stream()
+                .map(MemberDTO::new)
+                .collect(toList());
+    }
+
+    public List<MemberDTO> getMembersPaginated(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<Member> members = memberRepository.findAll(pageable);
+        List<Member> listOfMembers = members.getContent();
+        List<MemberDTO>content =listOfMembers.stream().map(MemberDTO::new).collect(toList());
+        return content;
+       // return memberRepository.findAll(pageable).map(MemberDTO::new);
+    }
 
 
 

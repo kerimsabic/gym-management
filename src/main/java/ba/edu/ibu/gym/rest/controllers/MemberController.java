@@ -7,6 +7,7 @@ import ba.edu.ibu.gym.rest.dto.MemberRequestDTO;
 import ba.edu.ibu.gym.rest.dto.TrainerDTO;
 import ba.edu.ibu.gym.rest.dto.TrainerRequestDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,30 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMembers());
 
     }
+    @RequestMapping(method = RequestMethod.GET, path = "/online")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    public ResponseEntity<List<MemberDTO>> getOnlineMembers() {
+        return ResponseEntity.ok(memberService.getOnlineMembers());
+
+    }
+    @RequestMapping(method = RequestMethod.GET, path = "/offline")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    public ResponseEntity<List<MemberDTO>> getOfflineMembers() {
+        return ResponseEntity.ok(memberService.getOfflineMembers());
+
+    }
 
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
     public ResponseEntity<MemberDTO> getMemberById(@PathVariable String id) {
         return ResponseEntity.ok(memberService.getMemberById(id));
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/pagination/")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public ResponseEntity<List<MemberDTO>> getAdmins(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "6") int pageSize) {
+        return ResponseEntity.ok(memberService.getMembersPaginated(page, pageSize));
     }
 
 
