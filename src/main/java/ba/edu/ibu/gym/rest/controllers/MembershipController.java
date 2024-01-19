@@ -40,17 +40,17 @@ public class MembershipController {
         return ResponseEntity.ok(membershipService.getMembershipByMemberId(id));
     }
 
-    @RequestMapping(method = RequestMethod.POST,path = "/create")
+   /* @RequestMapping(method = RequestMethod.POST,path = "/create")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<MembershipDTO> addMembership(@RequestBody MembershipRequestDTO payload){
         return ResponseEntity.ok(membershipService.createMembership(payload));
-    }
+    }*/
 
-    @RequestMapping(method = RequestMethod.PUT,path = "/update/{id}")
+   /* @RequestMapping(method = RequestMethod.PUT,path = "/update/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<MembershipDTO> updateMembership(@PathVariable String id,@RequestBody MembershipRequestDTO payload){
         return ResponseEntity.ok(membershipService.updateMemberMembership(id,payload));
-    }
+    }*/
 
     /*@RequestMapping(method = RequestMethod.PUT,path = "/{id}")
     public ResponseEntity<MembershipDTO> updateMembership(@PathVariable String id,@RequestBody MembershipRequestDTO membership){

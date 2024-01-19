@@ -22,12 +22,12 @@ import static java.util.stream.Collectors.toList;
 public class MembershipService {
 
     private MembershipRepository membershipRepository;
-    private MemberService memberService;
+
     private TrainingPlanService trainingPlanService;
 
-    public MembershipService(MembershipRepository membershipRepository, MemberService memberService, TrainingPlanService trainingPlanService){
+    public MembershipService(MembershipRepository membershipRepository, TrainingPlanService trainingPlanService){
         this.membershipRepository=membershipRepository;
-        this.memberService=memberService;
+
         this.trainingPlanService=trainingPlanService;
 
     }
@@ -56,7 +56,7 @@ public class MembershipService {
         return new MembershipDTO(membership.get());
     }
 
-    public MembershipDTO updateMemberMembership(String id, MembershipRequestDTO payload){
+    /*public MembershipDTO updateMemberMembership(String id, MembershipRequestDTO payload){
 
         Optional<Membership> membership=membershipRepository.findById(id);
         Member member= memberService.getMemberById2(payload.getMemberId());
@@ -88,9 +88,9 @@ public class MembershipService {
         membershipRepository.save(membership.get());
 
         return new MembershipDTO(membership.get());
-    }
+    }*/
 
-    public MembershipDTO createMembership(MembershipRequestDTO payload){
+   /* public MembershipDTO createMembership(MembershipRequestDTO payload){
 
         String memberId= payload.getMemberId();
         String trainigPlanId=payload.getTrainingPlanId();
@@ -126,9 +126,9 @@ public class MembershipService {
 
         membershipRepository.save(membership);
         return new MembershipDTO(membership);
-    }
+    }*/
 
-    public Membership createMembershipOnMemberCreation(String memberId, int numOfMonths, String trainingPlanId){
+    /*public Membership createMembershipOnMemberCreation(String memberId, int numOfMonths, String trainingPlanId){
 
         Member member= memberService.getMemberById2(memberId);
         TrainingPlan trainingPlan=trainingPlanService.getPlanById(trainingPlanId);
@@ -159,7 +159,7 @@ public class MembershipService {
 
         membershipRepository.save(membership);
         return membership;
-    }
+    }*/
 
 
     public void deleteMembership(String id) {

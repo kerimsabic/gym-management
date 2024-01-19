@@ -8,6 +8,7 @@ import ba.edu.ibu.gym.core.repository.MemberRepository;
 import ba.edu.ibu.gym.rest.dto.*;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -22,11 +23,12 @@ public class AttendanceService {
     private AttendanceRepository attendanceRepository;
     private MemberService memberService;
     private MemberRepository memberRepository;
-
-    public AttendanceService(AttendanceRepository attendanceRepository, MemberService memberService, MemberRepository memberRepository){
+    private MembershipService membershipService;
+    public AttendanceService(AttendanceRepository attendanceRepository, MemberService memberService, MemberRepository memberRepository, MembershipService membershipService){
         this.attendanceRepository=attendanceRepository;
         this.memberService=memberService;
         this.memberRepository=memberRepository;
+        this.membershipService=membershipService;
     }
 
     public List<AttendanceDTO> getAllAttendance(){
@@ -50,25 +52,34 @@ public class AttendanceService {
         String memberId= payload.getMemberId();
 
         Member member= memberService.getMemberById2(memberId);
+        Date currentDate = new Date();
+        MembershipDTO membership=membershipService.getMembershipByMemberId(memberId);
+        Date membershipEndDate=membership.getEndDate();
+        if(membershipEndDate.before(currentDate)){                                                  //checking if membership is not expired
+            throw new ResourceNotFoundException("Membership expired");
+        }
+        else{
+            Attendance attendance= payload.toEntity();
+            attendance.setMember(member);
+            member.setStatusType(StatusType.ONLINE);
+            memberRepository.save(member);
 
-        Attendance attendance= payload.toEntity();
-        attendance.setMember(member);
-        member.setStatusType(StatusType.ONLINE);
-        memberRepository.save(member);
-
-        attendanceRepository.save(attendance);
+            attendanceRepository.save(attendance);
 
 
-        scheduler.schedule(() -> {
-            // Retrieve the member again to avoid issues with detached entities
-            Member updatedMember = memberService.getMemberById2(memberId);
-            if (updatedMember.getStatusType() == StatusType.ONLINE) {
-                updatedMember.setStatusType(StatusType.OFFLINE);
-                memberRepository.save(updatedMember);
-            }
-        }, 4, TimeUnit.MINUTES);                //set this to hours, minutes just for demonstration
+            scheduler.schedule(() -> {
+                // Retrieve the member again to avoid issues with detached entities
+                Member updatedMember = memberService.getMemberById2(memberId);
+                if (updatedMember.getStatusType() == StatusType.ONLINE) {
+                    updatedMember.setStatusType(StatusType.OFFLINE);
+                    memberRepository.save(updatedMember);
+                }
+            }, 4, TimeUnit.MINUTES);                //set this to hours, minutes just for demonstration
 
-        return new AttendanceDTO(attendance);
+            return new AttendanceDTO(attendance);
+        }
+
+
     }
 
     public void deleteAttendance(String id) {

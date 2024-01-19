@@ -7,6 +7,8 @@ import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.TrainerRepository;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +21,9 @@ import static java.util.stream.Collectors.toList;
 public class TrainerService {
     private TrainerRepository trainerRepository;
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -75,10 +80,15 @@ public class TrainerService {
         }
         Trainer existingTrainer=trainer.get();
         Trainer updatedTrainer= payload.toEntity();
+        System.out.println(updatedTrainer.getPassword());
 
-        if(updatedTrainer.getPassword()==null || updatedTrainer.getPassword().isEmpty()){
+        if(payload.getPassword()==null ){       //ako se sifra ostavi prazna da se ne mijenja
             updatedTrainer.setPassword(existingTrainer.getPassword());
         }
+
+            updatedTrainer.setPassword(passwordEncoder.encode(payload.getPassword()));       //da bi sifra bila hashovana
+
+
 
         updatedTrainer.setId(trainer.get().getId());
         updatedTrainer=trainerRepository.save(updatedTrainer);

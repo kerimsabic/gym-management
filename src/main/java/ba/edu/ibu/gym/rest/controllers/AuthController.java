@@ -3,10 +3,8 @@ package ba.edu.ibu.gym.rest.controllers;
 import ba.edu.ibu.gym.core.service.AuthService;
 import ba.edu.ibu.gym.rest.dto.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
@@ -29,6 +27,11 @@ public class AuthController {
     @RequestMapping(method = RequestMethod.POST, path = "/registerAdmin")
     public ResponseEntity<UserDTO> registerAdmin(@RequestBody UserRequestDTO member) {
         return ResponseEntity.ok(authService.signUpAdmin(member));
+    }
+    @RequestMapping(method = RequestMethod.PUT,path = "/updateAdmin/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<UserDTO> updateAdmin(@PathVariable String id, @RequestBody UserRequestDTO user){
+        return ResponseEntity.ok(authService.updateAdmin(id,user));
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/login")

@@ -7,6 +7,8 @@ import ba.edu.ibu.gym.rest.dto.EquipmentRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +47,26 @@ public class EquipmentService {
         Equipment updatedEquipment = equipmentRequestDTO.toEntity();
         updatedEquipment.setId(equipment.get().getId());
         updatedEquipment = equipmentRepository.save(updatedEquipment);
+        return updatedEquipment;
+    }
+
+    public Equipment serviceEquipment(String id) {
+        Optional<Equipment> equipment = equipmentRepository.findById(id);
+        if (equipment.isEmpty()) {
+            throw new ResourceNotFoundException("Equipment with the given ID does not exist.");
+        }
+
+        Date currentDate = new Date();
+        List<Date>serviceHistory;
+        serviceHistory=equipment.get().getServiceHistory();
+        serviceHistory.add(currentDate);
+        equipment.get().setServiceHistory(serviceHistory);
+
+        Equipment updatedEquipment = equipment.get();
+         updatedEquipment.setId(equipment.get().getId());
+
+        equipmentRepository.save(updatedEquipment);
+
         return updatedEquipment;
     }
 

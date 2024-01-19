@@ -2,19 +2,21 @@ package ba.edu.ibu.gym.core.service;
 
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.Member;
+import ba.edu.ibu.gym.core.model.Membership;
 import ba.edu.ibu.gym.core.model.Trainer;
 import ba.edu.ibu.gym.core.model.TrainingPlan;
 import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.MemberRepository;
+import ba.edu.ibu.gym.core.repository.MembershipRepository;
 import ba.edu.ibu.gym.core.repository.TrainerRepository;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -26,15 +28,23 @@ public class MemberService {
     private UserRepository userRepository;
     private TrainerRepository trainerRepository;
     private TrainingPlanService trainingPlanService;
+    private MembershipService membershipService;
+    private MembershipRepository membershipRepository;
+
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
 
-    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository,TrainingPlanService trainingPlanService) {
+    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository,TrainingPlanService trainingPlanService, MembershipService membershipService,  MembershipRepository membershipRepository ) {
         this.memberRepository = memberRepository;
         this.userRepository=userRepository;
         this.trainerService=trainerService;
         this.trainerRepository=trainerRepository;
         this.trainingPlanService=trainingPlanService;
+        this.membershipService=membershipService;
+        this.membershipRepository=membershipRepository;
     }
 
     public List<MemberDTO> getMembers() {
@@ -166,8 +176,6 @@ public class MemberService {
     }
 
 
-
-
     public  MemberDTO updateMember(String id, MemberRequestDTO payload){
         Optional<Member> member = memberRepository.findById(id);
         if(member.isEmpty()){
@@ -175,6 +183,9 @@ public class MemberService {
         }
         Member updatedMembers= payload.toEntity();
         String trainerId=payload.getTrainerId();
+
+        TrainingPlan trainingPlan=trainingPlanService.getPlanById(payload.getTrainingPlanId());
+        updatedMembers.setTrainingPlan(trainingPlan);
 
         updatedMembers.setId(member.get().getId());
 
@@ -187,12 +198,89 @@ public class MemberService {
             List<Member> members = new ArrayList<>();
             newTrainer.setMembers(members);
         }
+        if(payload.getPassword()==null ){
+            updatedMembers.setPassword(member.get().getPassword());
+        }
+        else{
+            updatedMembers.setPassword(
+                    passwordEncoder.encode(payload.getPassword())
+            );
+        }
+
 
         updatedMembers=memberRepository.save(updatedMembers);
+
+        updateMemberMembership(id, payload);            //for updating the membership
 
 
         userRepository.save(updatedMembers);
         return new MemberDTO(updatedMembers);
+    }
+
+    public void updateMemberMembership(String id, MemberRequestDTO payload){
+
+        Optional<Membership> membership=membershipRepository.findMembershipByMember_Id(id);
+
+        TrainingPlan trainingPlan=trainingPlanService.getPlanById(payload.getTrainingPlanId());
+        if(membership.isEmpty()){
+            throw new ResourceNotFoundException("The membership with the given ID does not exist.");
+        }
+
+
+        membership.get().setTrainingPlan(trainingPlan);
+
+        Date startDate = new Date();
+        int durationInMonths = payload.getNumOfMonths();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);                            //used to calculate the end date based on provided number of months
+        calendar.add(Calendar.MONTH, durationInMonths);
+        Date endDate = calendar.getTime();
+
+        membership.get().setEndDate(endDate);
+
+        Date currentDate = new Date();
+        if(endDate.before(currentDate)){
+            membership.get().setStatusType(StatusType.OFFLINE);
+        }
+        else{
+            membership.get().setStatusType(StatusType.ONLINE);
+        }
+        membershipRepository.save(membership.get());
+
+        //new MembershipDTO(membership.get());
+    }
+
+    public Membership createMembershipOnMemberCreation(String memberId, int numOfMonths, String trainingPlanId){
+
+        Member member= getMemberById2(memberId);
+        TrainingPlan trainingPlan=trainingPlanService.getPlanById(trainingPlanId);
+
+        Membership membership= new Membership();
+
+        membership.setMember(member);
+        membership.setTrainingPlan(trainingPlan);
+
+
+        Date startDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);                            //used to calculate the end date based on provided number of months
+        calendar.add(Calendar.MONTH, numOfMonths);
+        Date endDate = calendar.getTime();
+
+        Date currentDate = new Date();
+
+        if(endDate.before(currentDate)){
+            membership.setStatusType(StatusType.OFFLINE);
+        }
+        else{
+            membership.setStatusType(StatusType.ONLINE);
+        }
+
+        membership.setStartDate(startDate);
+        membership.setEndDate(endDate);
+
+        membershipRepository.save(membership);
+        return membership;
     }
 
     public void deleteMembers(String id){

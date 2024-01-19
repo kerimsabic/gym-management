@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -21,7 +22,7 @@ public class AuthService {
     private final TrainerRepository trainerRepository;
     private final TrainingPlanService trainingPlanService;
     private final TrainerService trainerService;
-    private final MembershipService membershipService;
+    private final MemberService memberService;
     private final MembershipRepository membershipRepository;
 
 
@@ -36,13 +37,13 @@ public class AuthService {
 
 
     public AuthService(UserRepository userRepository,MemberRepository memberRepository, TrainerRepository trainerRepository, TrainingPlanService trainingPlanService,
-                       TrainerService trainerService, MembershipService membershipService, MembershipRepository membershipRepository) {
+                       TrainerService trainerService, MemberService membershipService, MembershipRepository membershipRepository) {
         this.userRepository = userRepository;
         this.memberRepository=memberRepository;
         this.trainerRepository=trainerRepository;
         this.trainingPlanService=trainingPlanService;
         this.trainerService=trainerService;
-        this.membershipService=membershipService;
+        this.memberService=membershipService;
         this.membershipRepository=membershipRepository;
     }
 
@@ -86,6 +87,26 @@ public class AuthService {
         return new UserDTO(user);
     }
 
+    public UserDTO updateAdmin(String id, UserRequestDTO payload){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+        }
+        User updatedUser= payload.toEntity();
+        updatedUser.setId(user.get().getId());
+
+        if(payload.getPassword()==null ){
+            updatedUser.setPassword(user.get().getPassword());
+        }
+        else{
+            updatedUser.setPassword(
+                    passwordEncoder.encode(payload.getPassword())
+            );
+        }
+        updatedUser=userRepository.save(updatedUser);
+        return new UserDTO(updatedUser);
+    }
+
     public MemberDTO signUpMember(MemberRequestDTO memberRequestDTO) {
         System.out.println(memberRequestDTO.getNumOfMonths());
         memberRequestDTO.setPassword(
@@ -110,7 +131,7 @@ public class AuthService {
         if(member!=null && member.getId()!=null){           //if member successfully saved to the database
             int num=memberRequestDTO.getNumOfMonths();
             String memberId=member.getId();
-            Membership membership=membershipService.createMembershipOnMemberCreation(memberId,num,trainingPlanId);
+            Membership membership=memberService.createMembershipOnMemberCreation(memberId,num,trainingPlanId);
             membershipRepository.save(membership);
             System.out.println(membership.getEndDate());
         }
