@@ -38,6 +38,12 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/token/{id}")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    public ResponseEntity<UserDTO> getUserByJToken(@PathVariable String id) {
+        return ResponseEntity.ok(userService.getUserByToken(id));
+    }
     @RequestMapping(method = RequestMethod.POST,path = "/register")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserRequestDTO user){

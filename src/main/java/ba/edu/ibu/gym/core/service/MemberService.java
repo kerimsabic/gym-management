@@ -246,6 +246,23 @@ public class MemberService {
         return new MemberDTO(updatedMembers);
     }
 
+    public  MemberDTO updateMemberPassword(String id, String newpassword){
+        Optional<Member> member = memberRepository.findById(id);
+        if(member.isEmpty()){
+            throw new ResourceNotFoundException("The member with the given ID does not exist.");
+        }
+
+        member.get().setPassword(
+                passwordEncoder.encode(newpassword)
+        );
+        System.out.println(member.get().getPassword());
+        Member updatedMember=member.get();
+        updatedMember.setPassword(member.get().getPassword());
+        memberRepository.save(updatedMember);
+        userRepository.save(updatedMember);
+        return new MemberDTO(updatedMember);
+    }
+
     public void updateMemberMembership(String id, MemberRequestDTO payload){
 
         Optional<Membership> membership=membershipRepository.findMembershipByMember_Id(id);

@@ -67,6 +67,12 @@ public class MemberController {
         return ResponseEntity.ok(memberService.updateMember(id,member));
     }
 
+    @RequestMapping(method = RequestMethod.PUT,path = "/password/{id}")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public ResponseEntity<MemberDTO> updateMemberPassword(@PathVariable String id,@RequestBody String password){
+        return ResponseEntity.ok(memberService.updateMemberPassword(id,password));
+    }
+
     @RequestMapping(method = RequestMethod.PUT,path = "/membership/{id}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
     public ResponseEntity<MembershipDTO> updateMemberMembershipSpecial(@PathVariable String id, @RequestBody MembershipRequestDTO payload){
