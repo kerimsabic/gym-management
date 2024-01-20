@@ -7,12 +7,17 @@ import ba.edu.ibu.gym.rest.dto.AttendanceDTO;
 import ba.edu.ibu.gym.rest.dto.AttendanceRequestDTO;
 import ba.edu.ibu.gym.rest.dto.MembershipDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("api/attendance")
@@ -32,6 +37,15 @@ public class AttendanceController {
         return ResponseEntity.ok(attendanceService.getAllAttendance());
     }
 
+    @GetMapping("/api/attendance/date")
+    public List<AttendanceDTO> getAttendanceByDate(@RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
+
+        Date startDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(date.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        return attendanceService.getAttendanceByDate(startDate, endDate);
+    }
+
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<AttendanceDTO> getAttendanceById(@PathVariable String id) {
@@ -46,7 +60,7 @@ public class AttendanceController {
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteAttendance(@RequestParam String id){
+    public ResponseEntity<Void> deleteAttendance(@PathVariable String id){
         attendanceService.deleteAttendance(id);
         return null;
     }

@@ -47,6 +47,14 @@ public class AttendanceService {
         return new AttendanceDTO(attendance.get());
     }
 
+    public List<AttendanceDTO> getAttendanceByDate(Date startdate, Date endDate){
+        List<Attendance> attendance = attendanceRepository.findByAttendanceDateBetween(startdate, endDate);
+        return attendance
+                .stream()
+                .map(AttendanceDTO::new)
+                .collect(toList());
+    }
+
     public AttendanceDTO recordAttendance(AttendanceRequestDTO payload){
 
         String memberId= payload.getMemberId();
