@@ -7,6 +7,7 @@ import ba.edu.ibu.gym.core.model.enums.StatusType;
 import java.util.Date;
 
 public class MembershipDTO {
+    private String id;
     private String memberId;
     private String memberName;
     private String memberEmail;
@@ -18,6 +19,7 @@ public class MembershipDTO {
     private String trainingPlanPrice;
     private StatusType statusType;
     public MembershipDTO(Membership membership) {
+        this.id=membership.getId();
         this.memberId = membership.getMember().getId();
         this.memberName = membership.getMember().getFirstName() + " " + membership.getMember().getLastName();
         this.memberEmail = membership.getMember().getEmail();
@@ -109,5 +111,13 @@ public class MembershipDTO {
 
     public void setStatusType(StatusType statusType) {
         this.statusType = statusType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

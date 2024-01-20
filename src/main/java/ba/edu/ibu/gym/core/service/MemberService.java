@@ -279,6 +279,44 @@ public class MemberService {
         //new MembershipDTO(membership.get());
     }
 
+    public MembershipDTO updateMemberMembershipWithMembership(String id, MembershipRequestDTO payload){
+
+        Optional<Membership> membership=membershipRepository.findMembershipByMember_Id(id);
+        Optional<Member> member = memberRepository.findById(id);
+
+
+        TrainingPlan trainingPlan=trainingPlanService.getPlanById(payload.getTrainingPlanId());
+        if(membership.isEmpty()){
+            throw new ResourceNotFoundException("The membership with the given ID does not exist.");
+        }
+
+        membership.get().setTrainingPlan(trainingPlan);
+
+        Date startDate = new Date();
+        int durationInMonths = payload.getNumOfMonths();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);                            //used to calculate the end date based on provided number of months
+        calendar.add(Calendar.MONTH, durationInMonths);
+        Date endDate = calendar.getTime();
+
+        membership.get().setEndDate(endDate);
+
+        Date currentDate = new Date();
+        if(endDate.before(currentDate)){
+            membership.get().setStatusType(StatusType.OFFLINE);
+        }
+        else{
+            membership.get().setStatusType(StatusType.ONLINE);
+        }
+        Member updatedmember=member.get();
+
+        updatedmember.setTrainingPlan(trainingPlan);
+        memberRepository.save(updatedmember);
+        membershipRepository.save(membership.get());
+
+        return new MembershipDTO(membership.get());
+    }
+
     public Membership createMembershipOnMemberCreation(String memberId, int numOfMonths, String trainingPlanId){
 
         Member member= getMemberById2(memberId);
@@ -314,9 +352,14 @@ public class MemberService {
 
     public void deleteMembers(String id){
         Optional<Member> member = memberRepository.findById(id);
+        Optional<Membership> membership=membershipRepository.findMembershipByMember_Id(id);
         member.ifPresent(member1 -> {
             memberRepository.delete(member1);
             userRepository.delete(member1);
+            membership.ifPresent(membership1 -> {
+                membershipRepository.delete(membership1);
+            });
+
         });
     }
 }

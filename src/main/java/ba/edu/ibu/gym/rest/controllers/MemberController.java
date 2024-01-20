@@ -1,11 +1,9 @@
 package ba.edu.ibu.gym.rest.controllers;
 
 import ba.edu.ibu.gym.core.model.Member;
+import ba.edu.ibu.gym.core.model.Membership;
 import ba.edu.ibu.gym.core.service.MemberService;
-import ba.edu.ibu.gym.rest.dto.MemberDTO;
-import ba.edu.ibu.gym.rest.dto.MemberRequestDTO;
-import ba.edu.ibu.gym.rest.dto.TrainerDTO;
-import ba.edu.ibu.gym.rest.dto.TrainerRequestDTO;
+import ba.edu.ibu.gym.rest.dto.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +65,12 @@ public class MemberController {
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
     public ResponseEntity<MemberDTO> updateMember(@PathVariable String id,@RequestBody MemberRequestDTO member){
         return ResponseEntity.ok(memberService.updateMember(id,member));
+    }
+
+    @RequestMapping(method = RequestMethod.PUT,path = "/membership/{id}")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public ResponseEntity<MembershipDTO> updateMemberMembershipSpecial(@PathVariable String id, @RequestBody MembershipRequestDTO payload){
+        return ResponseEntity.ok(memberService.updateMemberMembershipWithMembership(id,payload));
     }
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
