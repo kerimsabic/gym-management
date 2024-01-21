@@ -18,6 +18,6 @@ public class EquipmentRepositoryTest {
     @Test
     public void returnsAllEquipment(){
         List<Equipment> allEquipment = equipmentRepository.findAll();
-        Assertions.assertEquals(3,allEquipment.size());
+        Assertions.assertEquals(4,allEquipment.size());
     }
 }

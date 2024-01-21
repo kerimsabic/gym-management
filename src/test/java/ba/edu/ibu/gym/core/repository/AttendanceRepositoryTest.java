@@ -19,6 +19,6 @@ public class AttendanceRepositoryTest {
     @Test
     public void returnsAllMarkedAttendance(){
         List<Attendance> attendanceList = attendanceRepository.findAll();
-        Assertions.assertEquals(1,attendanceList.size());
+        Assertions.assertEquals(39,attendanceList.size());
     }
 }
