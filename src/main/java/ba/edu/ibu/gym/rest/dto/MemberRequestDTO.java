@@ -6,15 +6,19 @@ public class MemberRequestDTO extends UserRequestDTO {
 
     private String qrCode;
     private String trainerId;
+    private String trainingPlanId;
+    private int numOfMonths;
 
     public MemberRequestDTO(){
 
     }
 
-    public MemberRequestDTO(Member member, String trainerId){
+    public MemberRequestDTO(Member member, String trainerId, String trainingPlanId, int numOfMonths){
         super(member);
         this.qrCode=member.getQrCode();
         this.trainerId=trainerId;
+        this.trainingPlanId=trainingPlanId;
+        this.numOfMonths=numOfMonths;
     }
 
     public Member toEntity(){
@@ -28,8 +32,11 @@ public class MemberRequestDTO extends UserRequestDTO {
         member.setPhone(this.getPhone());
         member.setQrCode(this.qrCode);
         member.setUsername(this.getUsername());
+        member.setStatusType(this.getStatusType());
        // member.setTrainer(getTrainerId());
        this.setTrainerId(trainerId);
+       this.setTrainingPlanId(trainingPlanId);
+       this.setNumOfMonths(numOfMonths);
      //  member.setTrainer();
 
         return member;
@@ -52,5 +59,21 @@ public class MemberRequestDTO extends UserRequestDTO {
 
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
+    }
+
+    public void setTrainingPlanId(String trainingPlanId) {
+        this.trainingPlanId = trainingPlanId;
+    }
+
+    public String getTrainingPlanId() {
+        return trainingPlanId;
+    }
+
+    public void setNumOfMonths(int numOfMonths) {
+        this.numOfMonths = numOfMonths;
+    }
+
+    public int getNumOfMonths() {
+        return numOfMonths;
     }
 }

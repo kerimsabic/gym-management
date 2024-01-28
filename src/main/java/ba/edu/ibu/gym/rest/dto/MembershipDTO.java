@@ -2,10 +2,12 @@ package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.Membership;
 import ba.edu.ibu.gym.core.model.TrainingPlan;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 
 import java.util.Date;
 
 public class MembershipDTO {
+    private String id;
     private String memberId;
     private String memberName;
     private String memberEmail;
@@ -15,8 +17,9 @@ public class MembershipDTO {
     private String trainingPlanId;
     private String trainingPlanName;
     private String trainingPlanPrice;
-
+    private StatusType statusType;
     public MembershipDTO(Membership membership) {
+        this.id=membership.getId();
         this.memberId = membership.getMember().getId();
         this.memberName = membership.getMember().getFirstName() + " " + membership.getMember().getLastName();
         this.memberEmail = membership.getMember().getEmail();
@@ -26,6 +29,7 @@ public class MembershipDTO {
         this.trainingPlanId = membership.getTrainingPlan().getId();
         this.trainingPlanName = membership.getTrainingPlan().getName();
         this.trainingPlanPrice = membership.getTrainingPlan().getPrice();
+        this.statusType=membership.getStatusType();
     }
 
 
@@ -99,5 +103,21 @@ public class MembershipDTO {
 
     public void setTrainingPlanPrice(String trainingPlanPrice) {
         this.trainingPlanPrice = trainingPlanPrice;
+    }
+
+    public StatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

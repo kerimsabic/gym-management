@@ -44,9 +44,15 @@ public class EquipmentController {
         return ResponseEntity.ok(equipmentService.updateEquipment(id,equipment));
     }
 
+    @RequestMapping(method = RequestMethod.PUT,path = "/service/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<Equipment> serviceEquipment(@PathVariable String id){
+        return ResponseEntity.ok(equipmentService.serviceEquipment(id));
+    }
+
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteEquipment(@RequestParam String id){
+    public ResponseEntity<Void> deleteEquipment(@PathVariable String id){
         equipmentService.deleteEquipment(id);
         return null;
     }

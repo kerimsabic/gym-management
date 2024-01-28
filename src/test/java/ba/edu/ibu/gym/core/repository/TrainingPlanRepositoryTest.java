@@ -22,6 +22,6 @@ public class TrainingPlanRepositoryTest {
     @Test
     public void returnsAllTrainingPlans(){
         List<TrainingPlan> trainingPlans = trainingPlanRepository.findAll();
-        Assertions.assertEquals(1,trainingPlans.size());
+        Assertions.assertEquals(4,trainingPlans.size());
     }
 }

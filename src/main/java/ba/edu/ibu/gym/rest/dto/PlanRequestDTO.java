@@ -1,6 +1,7 @@
 package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.TrainingPlan;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 
 public class PlanRequestDTO {
     private String name;
@@ -8,6 +9,8 @@ public class PlanRequestDTO {
     private String description;
 
     private String price;
+
+    private StatusType statusType;
 
 
     public PlanRequestDTO(){
@@ -18,6 +21,7 @@ public class PlanRequestDTO {
         this.name=trainingPlan.getName();
         this.description=trainingPlan.getDescription();
         this.price=trainingPlan.getPrice();
+        this.statusType=trainingPlan.getStatusType();
     }
 
     public TrainingPlan toEntity(){
@@ -25,6 +29,7 @@ public class PlanRequestDTO {
         trainingPlan.setName(name);
         trainingPlan.setDescription(description);
         trainingPlan.setPrice(price);
+        trainingPlan.setStatusType(statusType);
         return trainingPlan;
     }
 
@@ -50,5 +55,13 @@ public class PlanRequestDTO {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
+    }
+
+    public StatusType getStatusType() {
+        return statusType;
     }
 }

@@ -19,6 +19,6 @@ public class MembershipRepositoryTest {
     @Test
     public void returnsAllMemberships(){
         List<Membership> memberships = membershipRepository.findAll();
-        Assertions.assertEquals(1,memberships.size());
+        Assertions.assertEquals(3,memberships.size());
     }
 }

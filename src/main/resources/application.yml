@@ -18,3 +18,7 @@ spring:
 security:
   jwt:
     secret: 'YCgqRZm6TuGfqyl3n8NJWZU29pSQxklzTgkRSiTRTrJCKQwHqA'
+
+management:
+  security:
+    enabled: false

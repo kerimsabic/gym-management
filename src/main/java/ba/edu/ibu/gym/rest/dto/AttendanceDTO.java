@@ -15,26 +15,29 @@ public class AttendanceDTO {
     private String email;
     private String image;
     private Date date;
-    private String trainerName;
+   /* private String trainerName;
     private String trainerId;
+*/
 
 
 
-
-    public void setTrainerId(String trainerId) {
+   /* public void setTrainerId(String trainerId) {
         this.trainerId = trainerId;
-    }
+    }*/
 
-    public AttendanceDTO(Attendance member) {
-        this.id = member.getId();
-        this.firstName = member.getMember().getFirstName();
-        this.lastName=member.getMember().getLastName();
-        this.userType = member.getMember().getUserType();
-        this.email = member.getMember().getEmail();
-        this.image=member.getMember().getImage();
-        this.date=member.getAttendanceDate();
-        this.trainerName=member.getMember().getTrainer().getFirstName()+" "+member.getMember().getTrainer().getLastName() ;
-        this.trainerId=member.getMember().getTrainer().getId();
+    public AttendanceDTO(Attendance attendance) {
+        this.id = attendance.getId();
+        this.firstName = attendance.getMember().getFirstName();
+        this.lastName=attendance.getMember().getLastName();
+        this.userType = attendance.getMember().getUserType();
+        this.email = attendance.getMember().getEmail();
+        this.image=attendance.getMember().getImage();
+        this.date=attendance.getAttendanceDate();
+        /*if(member.getMember().getTrainer().getId()!=null){
+            this.trainerName=member.getMember().getTrainer().getFirstName()+" "+member.getMember().getTrainer().getLastName() ;
+            this.trainerId=member.getMember().getTrainer().getId();
+        }*/
+
     }
 
 
@@ -87,7 +90,7 @@ public class AttendanceDTO {
         this.image = image;
     }
 
-    public String getTrainerName() {
+  /*  public String getTrainerName() {
         return trainerName;
     }
 
@@ -97,7 +100,7 @@ public class AttendanceDTO {
 
     public String getTrainerId() {
         return trainerId;
-    }
+    }*/
 
     public Date getDate() {
         return date;

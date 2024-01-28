@@ -21,13 +21,13 @@ public class TrainingPlanController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/")
-    @PreAuthorize("hasAuthority('ADMIN')")
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<TrainingPlan>> getAllPlans() {
         return ResponseEntity.ok(trainingPlanService.getAllPlans());
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<TrainingPlan> getPlanByID(@PathVariable String id) {
         return ResponseEntity.ok(trainingPlanService.getPlanById(id));
     }
@@ -46,7 +46,7 @@ public class TrainingPlanController {
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Void> deleteTrainingPlan(@RequestParam String id){
+    public ResponseEntity<Void> deleteTrainingPlan(@PathVariable String id){
         trainingPlanService.deleteTrainingPlan(id);
         return null;
     }

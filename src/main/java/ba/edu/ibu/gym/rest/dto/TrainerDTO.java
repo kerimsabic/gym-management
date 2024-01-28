@@ -18,26 +18,19 @@ public class TrainerDTO extends UserDTO{
     public TrainerDTO(Trainer trainer) {
         super(trainer);
 
-        //this.members = trainer.getMembers();
-       // this.memberInformation = new HashMap<>();
-        this.memberInformation = new ArrayList<>();
+        if(trainer.getMembers()!=null){
+            this.memberInformation = new ArrayList<>();
 
-        for (Member member : trainer.getMembers()) {
-            this.memberInformation.add(member.getFirstName()+" "+member.getLastName()+ " "+ member.getEmail());
-            //this.memberInformation.put("Name:", member.getFirstName()+" "+member.getLastName());
+            for (Member member : trainer.getMembers()) {
+                this.memberInformation.add(member.getFirstName()+" "+member.getLastName()+ " "+ member.getEmail());
 
+
+            }
         }
 
 
+
         }
-
-   /* public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
-    }*/
 
     public List<String> getMemberInformation() {
         return memberInformation;

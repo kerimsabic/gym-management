@@ -1,6 +1,7 @@
 package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class UserRequestDTO {
     private String phone;
     private String address;
     private String image;
+    private StatusType statusType;
 
 
     public  UserRequestDTO() { }
@@ -28,6 +30,7 @@ public class UserRequestDTO {
         this.address=user.getAddress();
         this.image=user.getImage();
         this.username= user.getUsername();
+        this.statusType=user.getStatusType();
     }
     public User toEntity(){
         User user= new User();
@@ -40,6 +43,7 @@ public class UserRequestDTO {
         user.setPhone(phone);
         user.setImage(image);
         user.setUsername(username);
+        user.setStatusType(statusType);
         return user;
     }
 
@@ -116,5 +120,13 @@ public class UserRequestDTO {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public StatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
     }
 }

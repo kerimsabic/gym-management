@@ -2,6 +2,7 @@ package ba.edu.ibu.gym.core.service;
 
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
@@ -20,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class UserService {
     private  UserRepository userRepository;
+    private JwtService jwtService;
 
    /* The first method of implemetation, need to comment out conditional property in both senders
     @Autowired
@@ -33,8 +35,9 @@ public class UserService {
 
 
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService=jwtService;
     }
 
     public List<UserDTO> getUsers() {
@@ -45,8 +48,24 @@ public class UserService {
                 .collect(toList());
     }
 
+    public List<UserDTO> getUserAdmins(){
+        List<User> adminUsers = userRepository.findByUserType(UserType.ADMIN);
+        return  adminUsers.stream().map(UserDTO::new).collect(toList());
+    }
+
     public UserDTO getUserById(String id){
         Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+        }
+        return new UserDTO(user.get());
+    }
+
+    public UserDTO getUserByToken(String token){
+
+        String userEmail=jwtService.extractUserName(token);
+        System.out.println(userEmail);
+        Optional<User> user = userRepository.findByUsernameOrEmail(userEmail);
         if(user.isEmpty()){
             throw new ResourceNotFoundException("The user with the given ID does not exist.");
         }
@@ -56,6 +75,7 @@ public class UserService {
     public UserDTO addUser(UserRequestDTO payload) {
         User user = userRepository.save(payload.toEntity());
         user.setUserType(UserType.ADMIN);
+        user.setStatusType(StatusType.ONLINE);
         return new UserDTO(user);
     }
 
@@ -69,6 +89,8 @@ public class UserService {
         updatedUser=userRepository.save(updatedUser);
         return new UserDTO(updatedUser);
     }
+
+
 
     public void deleteUser(String id){
         Optional<User> user = userRepository.findById(id);

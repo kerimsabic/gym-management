@@ -1,5 +1,6 @@
 package ba.edu.ibu.gym.core.model;
 
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,8 @@ public class MembershipTest {
                 "someId2",
                 "testTrainingPlan",
                 "created for testing purpose",
-                "60$"
+                "60$",
+                StatusType.ONLINE
         );
 
         Member member1 = new Member();
@@ -40,7 +42,8 @@ public class MembershipTest {
                 member1,
                 date1,
                 date2,
-                trainingPlan
+                trainingPlan,
+                StatusType.ONLINE
         );
 
 
