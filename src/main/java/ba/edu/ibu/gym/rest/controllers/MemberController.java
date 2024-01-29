@@ -69,7 +69,7 @@ public class MemberController {
 
     @RequestMapping(method = RequestMethod.PUT,path = "/password/{id}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
-    public ResponseEntity<MemberDTO> updateMemberPassword(@PathVariable String id,@RequestBody String password){
+    public ResponseEntity<MemberDTO> updateMemberPassword(@PathVariable String id,@RequestBody MemberPasswordRequestDTO password){
         return ResponseEntity.ok(memberService.updateMemberPassword(id,password));
     }
 

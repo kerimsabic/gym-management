@@ -246,14 +246,15 @@ public class MemberService {
         return new MemberDTO(updatedMembers);
     }
 
-    public  MemberDTO updateMemberPassword(String id, String newpassword){
+    public  MemberDTO updateMemberPassword(String id, MemberPasswordRequestDTO newpassword){
         Optional<Member> member = memberRepository.findById(id);
         if(member.isEmpty()){
             throw new ResourceNotFoundException("The member with the given ID does not exist.");
         }
+        String newPassword=newpassword.toEntity();
 
         member.get().setPassword(
-                passwordEncoder.encode(newpassword)
+                passwordEncoder.encode(newPassword)
         );
         System.out.println(member.get().getPassword());
         Member updatedMember=member.get();
