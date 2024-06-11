@@ -11,18 +11,27 @@ public class TrainingPlan {
     private String name;
     private String description;
     private String price;
+
+    private String accessTime;
+    private String numOfPeople;
+    private boolean  water;
+    private boolean freeparking;
     private StatusType statusType;
 
-
+   
 
     public TrainingPlan(){}
 
-    public TrainingPlan(String id, String name, String description, String price, StatusType statusType) {
+    public TrainingPlan(String id, String name, String description, String price, StatusType statusType, String accessTime, String numOfPeople, boolean water, boolean freeparking) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.statusType=statusType;
+        this.accessTime=accessTime;
+        this.numOfPeople=numOfPeople;
+        this.water=water;
+        this.freeparking=freeparking;
     }
 
     public String getId() {
@@ -63,4 +72,36 @@ public class TrainingPlan {
         this.statusType = statusType;
     }
 
+    public String getAccessTime() {
+        return accessTime;
+    }
+
+    public void setAccessTime(String accessTime) {
+        this.accessTime = accessTime;
+    }
+
+    public String getNumOfPeople() {
+        return numOfPeople;
+    }
+
+    public void setNumOfPeople(String numOfPeople) {
+        this.numOfPeople = numOfPeople;
+    }
+
+    public void setFreeparking(boolean freeparking) {
+        this.freeparking = freeparking;
+    }
+    
+
+    public boolean isFreeparking() {
+        return freeparking;
+    }
+
+    public boolean isWater() {
+        return water;
+    }
+
+    public void setWater(boolean water) {
+        this.water = water;
+    }
 }

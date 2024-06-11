@@ -18,7 +18,7 @@ public class TrainerDTO extends UserDTO{
     public TrainerDTO(Trainer trainer) {
         super(trainer);
 
-        if(trainer.getMembers()!=null){
+        /*if(trainer.getMembers()!=null){
             this.memberInformation = new ArrayList<>();
 
             for (Member member : trainer.getMembers()) {
@@ -26,7 +26,7 @@ public class TrainerDTO extends UserDTO{
 
 
             }
-        }
+        }*/
 
 
 

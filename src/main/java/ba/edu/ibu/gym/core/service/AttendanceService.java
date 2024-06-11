@@ -39,6 +39,14 @@ public class AttendanceService {
                 .collect(toList());
     }
 
+    public List<AttendanceDTO> getAttendanceByMemberId(String memberId){
+        List<Attendance> attendances = attendanceRepository.findTop30ByMember_IdOrderByAttendanceDateDesc(memberId);
+        return attendances
+                .stream()
+                .map(AttendanceDTO::new)
+                .collect(toList());
+    }
+
     public AttendanceDTO getAttendanceById(String id){
         Optional<Attendance> attendance = attendanceRepository.findById(id);
         if(attendance.isEmpty()){
@@ -46,6 +54,8 @@ public class AttendanceService {
         }
         return new AttendanceDTO(attendance.get());
     }
+
+
 
     public List<AttendanceDTO> getAttendanceByDate(Date startdate, Date endDate){
         List<Attendance> attendance = attendanceRepository.findByAttendanceDateBetween(startdate, endDate);

@@ -13,7 +13,11 @@ public class TrainingPlanTest {
                 "testTrainingPlan",
                 "created for testing purpose",
                 "60$",
-                StatusType.ONLINE
+                StatusType.ONLINE,
+                "11:00-22:00",
+                "1",
+                true,
+                true
         );
 
         Assertions.assertEquals("testTrainingPlan",trainingPlan.getName());

@@ -53,12 +53,30 @@ public class UserService {
         return  adminUsers.stream().map(UserDTO::new).collect(toList());
     }
 
+    public List<UserDTO> getUserMembers(){
+        List<User> adminUsers = userRepository.findByUserType(UserType.MEMBER);
+        return  adminUsers.stream().map(UserDTO::new).collect(toList());
+    }
+
+    public List<UserDTO> getUserTrainers(){
+        List<User> adminUsers = userRepository.findByUserType(UserType.TRAINER);
+        return  adminUsers.stream().map(UserDTO::new).collect(toList());
+    }
+
     public UserDTO getUserById(String id){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
             throw new ResourceNotFoundException("The user with the given ID does not exist.");
         }
         return new UserDTO(user.get());
+    }
+
+    public User getUserById2(String id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+        }
+        return user.get();
     }
 
     public UserDTO getUserByToken(String token){

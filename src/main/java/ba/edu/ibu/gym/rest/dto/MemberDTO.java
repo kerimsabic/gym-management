@@ -19,8 +19,6 @@ public class MemberDTO extends UserDTO{
 
     public MemberDTO(Member member) {
         super(member);
-
-
         if(member.getTrainer()!=null) {
 
             this.trainerName = member.getTrainer().getFirstName() + " " + member.getTrainer().getLastName();
@@ -33,6 +31,7 @@ public class MemberDTO extends UserDTO{
 
 
     }
+
 
 
    /* public Trainer getTrainer() {

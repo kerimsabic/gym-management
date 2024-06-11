@@ -10,15 +10,14 @@ import java.util.Date;
 public class Membership {
     @Id
     private String id;
-    private Member member;
-
+    private User member;
     private Date startDate;
     private Date endDate;
     private TrainingPlan trainingPlan;
     private StatusType statusType;
 
 
-    public Membership(String id, Member member, Date startDate, Date endDate, TrainingPlan trainingPlan, StatusType statusType) {
+    public Membership(String id, User member, Date startDate, Date endDate, TrainingPlan trainingPlan, StatusType statusType) {
         this.id = id;
         this.member = member;
         this.startDate = startDate;
@@ -37,11 +36,11 @@ public class Membership {
         this.id = id;
     }
 
-    public Member getMember() {
+    public User getMember() {
         return member;
     }
 
-    public void setMember(Member member) {
+    public void setMember(User member) {
         this.member = member;
     }
 

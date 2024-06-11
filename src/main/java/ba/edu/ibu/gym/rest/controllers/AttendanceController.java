@@ -52,6 +52,12 @@ public class AttendanceController {
         return ResponseEntity.ok(attendanceService.getAttendanceById(id));
     }
 
+    @RequestMapping(method = RequestMethod.GET, path = "memberAttendance/{id}")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public ResponseEntity<List<AttendanceDTO>> getAttendanceByMemberId(@PathVariable String id) {
+        return ResponseEntity.ok(attendanceService.getAttendanceByMemberId(id));
+    }
+
     @RequestMapping(method = RequestMethod.POST, path = "/add")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<AttendanceDTO> recordAttendance(@RequestBody AttendanceRequestDTO payload) {

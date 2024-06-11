@@ -23,18 +23,30 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/")
-    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+   // @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
     public ResponseEntity<List<UserDTO>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/admins")
-    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    //@PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
     public ResponseEntity<List<UserDTO>> getAdmins() {
         return ResponseEntity.ok(userService.getUserAdmins());
     }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/members")
+    //@PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    public ResponseEntity<List<UserDTO>> getMembers() {
+        return ResponseEntity.ok(userService.getUserMembers());
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/trainers")
+    //@PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    public ResponseEntity<List<UserDTO>> getTrainers() {
+        return ResponseEntity.ok(userService.getUserTrainers());
+    }
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
-    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+    //@PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
@@ -44,11 +56,13 @@ public class UserController {
     public ResponseEntity<UserDTO> getUserByJToken(@PathVariable String id) {
         return ResponseEntity.ok(userService.getUserByToken(id));
     }
-    @RequestMapping(method = RequestMethod.POST,path = "/register")
+
+   /* @RequestMapping(method = RequestMethod.POST,path = "/register")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserRequestDTO user){
         return ResponseEntity.ok(userService.addUser(user));
-    }
+    }*/
+
     @RequestMapping(method = RequestMethod.PUT,path = "/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UserDTO> updateUser(@PathVariable String id,@RequestBody UserRequestDTO user){

@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface AttendanceRepository  extends MongoRepository<Attendance, String> {
     List<Attendance> findByAttendanceDateBetween(Date startDate, Date endDate);
+
+    List<Attendance> findTop30ByMember_IdOrderByAttendanceDateDesc(String member_id);
 }

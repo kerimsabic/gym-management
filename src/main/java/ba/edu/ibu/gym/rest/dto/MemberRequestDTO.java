@@ -1,6 +1,7 @@
 package ba.edu.ibu.gym.rest.dto;
 
 import ba.edu.ibu.gym.core.model.Member;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 
 public class MemberRequestDTO extends UserRequestDTO {
 
@@ -32,7 +33,8 @@ public class MemberRequestDTO extends UserRequestDTO {
         member.setPhone(this.getPhone());
         member.setQrCode(this.qrCode);
         member.setUsername(this.getUsername());
-        member.setStatusType(this.getStatusType());
+       // member.setStatusType(this.getStatusType());
+        member.setStatusType(StatusType.OFFLINE);
        // member.setTrainer(getTrainerId());
        this.setTrainerId(trainerId);
        this.setTrainingPlanId(trainingPlanId);
