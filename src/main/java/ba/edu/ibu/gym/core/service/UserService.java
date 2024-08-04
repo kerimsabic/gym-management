@@ -1,15 +1,21 @@
 package ba.edu.ibu.gym.core.service;
 
 import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
+import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import ba.edu.ibu.gym.core.repository.UserRepository;
+import ba.edu.ibu.gym.rest.dto.MemberDTO;
+import ba.edu.ibu.gym.rest.dto.PasswordDTO;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
 import ba.edu.ibu.gym.rest.dto.UserRequestDTO;
+import jakarta.validation.constraints.Email;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +37,11 @@ public class UserService {
 
    /* @Autowired
     private MailSender mailSender;*/
+
+
+
+    @Autowired
+    private EmailService emailService;
 
 
 
@@ -114,6 +125,34 @@ public class UserService {
         Optional<User> user = userRepository.findById(id);
         user.ifPresent(userRepository::delete);
     }
+
+   /* public UserDTO updateUserPassword(String memberId, PasswordDTO passwordDTO) {
+        Optional<User> memberOpt = userRepository.findById(memberId);
+
+
+        if (memberOpt.isPresent()) {
+            User member = memberOpt.get();
+
+            String newPassword = passwordDTO.getPassword();
+            String repeatedPassword = passwordDTO.getRepeatedPassword();
+
+            if (newPassword == null || !newPassword.equals(repeatedPassword)) {
+                throw new IllegalArgumentException("Passwords do not match");
+            }
+
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            member.setPassword(encodedPassword);
+
+
+            userRepository.save(member);
+
+            emailService.sendEmail("kerim.sabic@stu.ibu.edu.ba", member.getFirstName(), "Password change confirmation", "Your password has been successfully changed!", "Password has been changed");
+
+            return new UserDTO(member);
+        } else {
+            throw new ResourceNotFoundException("user not found");
+        }
+    }*/
 
 
 

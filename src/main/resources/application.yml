@@ -13,8 +13,19 @@ spring:
     mongodb:
       uri: mongodb+srv://kerimsabic2:sifra@gym.f9lt0t2.mongodb.net/?retryWrites=true&w=majority
       database: gym
-
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tesingtesting4@gmail.com
+    password: 'ecvb elqo mrwp avtg'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
 security:
   jwt:
     secret: 'YCgqRZm6TuGfqyl3n8NJWZU29pSQxklzTgkRSiTRTrJCKQwHqA'

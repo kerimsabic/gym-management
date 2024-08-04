@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Member extends User{
 
     private User trainer;
-
     private String qrCode;
     private TrainingPlan trainingPlan;
     private Membership membership;

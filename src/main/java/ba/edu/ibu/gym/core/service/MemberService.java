@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -38,16 +39,19 @@ public class MemberService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private  final EmailService emailService ;
 
 
 
-    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository,TrainingPlanService trainingPlanService, MembershipService membershipService,  MembershipRepository membershipRepository, UserService userService ) {
+
+    public MemberService(MemberRepository memberRepository, UserRepository userRepository,TrainerService trainerService, TrainerRepository trainerRepository,TrainingPlanService trainingPlanService, MembershipService membershipService,  MembershipRepository membershipRepository, UserService userService, EmailService emailService1 ) {
         this.memberRepository = memberRepository;
         this.userRepository=userRepository;
         this.trainingPlanService=trainingPlanService;
         this.membershipService=membershipService;
         this.membershipRepository=membershipRepository;
         this.userService=userService;
+        this.emailService=emailService1;
     }
 
     public List<MemberDTO> getMembers() {
@@ -134,66 +138,44 @@ public class MemberService {
         trainerRepository.save(trainer.get());
     }*/
 
-    public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId){
-        User trainer = userService.getUserById2(trainerId);
-        Member member=getMemberById2(memberId);
+    public MemberDTO addMemberToTrainerSpecial(String memberId, String trainerId) {
+        Optional<User> trainerOpt = userRepository.findById(trainerId);
+        Optional<Member> memberOpt = memberRepository.findById(memberId);
 
-        member.setTrainer(trainer);
+        if (trainerOpt.isPresent() && memberOpt.isPresent()) {
+            User trainer = trainerOpt.get();
+            Member member = memberOpt.get();
 
-        memberRepository.save(member);
-        userRepository.save(member);
-        return new MemberDTO(member);
+            member.setTrainer(trainer);
+            memberRepository.save(member);
+
+            return new MemberDTO(member);
+        } else {
+
+            throw new ResourceNotFoundException("Member or Trainer not found");
+        }
     }
+
 
     public MemberDTO removeMemberFromTrainer(String memberId){
 
 
-        Member member=getMemberById2(memberId);
 
+        Optional<Member> memberOpt = memberRepository.findById(memberId);
 
-        member.setTrainer(null);
-
-        memberRepository.save(member);
-        userRepository.save(member);
-        return new MemberDTO(member);
+        if ( memberOpt.isPresent()) {
+            Member member = memberOpt.get();
+             member.setTrainer(null);
+            memberRepository.save(member);
+            return new MemberDTO(member);
+        } else {
+            throw new ResourceNotFoundException("Member or Trainer not found");
+        }
     }
 
 
 
-    /* public MemberDTO addMember(MemberRequestDTO payload) {
 
-        String trainerId=payload.getTrainerId();
-        Member member = payload.toEntity();
-        String trainingPlanId= payload.getTrainingPlanId();
-         System.out.println(payload.getTrainingPlanId()+"   "+ payload.getTrainerId());
-
-
-        member.setUserType(UserType.MEMBER);
-        //member.setStatusType(StatusType.ONLINE);
-
-         if (trainerId != null) {
-
-            // Trainer newTrainer=trainerService.getTrainerById2(trainerId);
-            // member.setTrainer(newTrainer);
-
-             Member member2=memberRepository.save(member);
-            // addMemberToTrainer(member2.getId(),trainerId );
-
-         }
-         TrainingPlan trainingPlan=trainingPlanService.getPlanById(trainingPlanId);
-         member.setTrainingPlan(trainingPlan);
-
-         memberRepository.save(member);
-
-         userRepository.save(member);
-
-
-         Member member2=memberRepository.save(member);
-         addMemberToTrainer(member2.getId(),trainerId );
-
-        return new MemberDTO(member);
-
-    }*/
 
 
     public  MemberDTO updateMember(String id, MemberRequestDTO payload){
@@ -237,47 +219,32 @@ public class MemberService {
         return new MemberDTO(updatedMembers);
     }
 
-   /* public  MemberDTO updateMemberPassword(String id, MemberPasswordRequestDTO newpassword){
-        Optional<Member> member = memberRepository.findById(id);
-        if(member.isEmpty()){
-            throw new ResourceNotFoundException("The member with the given ID does not exist.");
+    public MemberDTO updateMemberPassword(String memberId, PasswordDTO passwordDTO) {
+        Optional<Member> memberOpt = memberRepository.findById(memberId);
+        Optional<User>userOpt= userRepository.findById(memberId);
+
+        if (memberOpt.isPresent() && userOpt.isPresent()) {
+            Member member = memberOpt.get();
+            User user = userOpt.get();
+            String newPassword = passwordDTO.getPassword();
+            String repeatedPassword = passwordDTO.getRepeatedPassword();
+
+            if (newPassword == null || !newPassword.equals(repeatedPassword)) {
+                throw new IllegalArgumentException("Passwords do not match");
+            }
+
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            member.setPassword(encodedPassword);
+            user.setPassword(encodedPassword);
+
+            memberRepository.save(member);
+            userRepository.save(user);
+            emailService.sendEmail("kerim.sabic@stu.ibu.edu.ba", member.getFirstName(), "Password change confirmation", "Your password has been successfully changed!", "Password has been changed");
+
+            return new MemberDTO(member);
+        } else {
+            throw new ResourceNotFoundException("Member not found");
         }
-        String newPassword=newpassword.toEntity();
-
-        member.get().setPassword(
-                passwordEncoder.encode(newPassword)
-        );
-        System.out.println(member.get().getPassword());
-        Member updatedMember=member.get();
-        updatedMember.setPassword(member.get().getPassword());
-        memberRepository.save(updatedMember);
-        userRepository.save(updatedMember);
-        return new MemberDTO(updatedMember);
-    }*/
-
-    public MemberDTO updateMemberPassword(String id, String password, String repeatedPassword) {
-        if (!Objects.equals(password, repeatedPassword)) {
-            throw new ResourceNotFoundException("Passwords do not match");
-        }
-
-        Optional<Member> memberOptional = memberRepository.findById(id);
-        Optional<User> userOptional = userRepository.findById(id);
-
-        if (memberOptional.isEmpty() && userOptional.isEmpty()) {
-            throw new ResourceNotFoundException("The member with the given ID does not exist.");
-        }
-
-        Member member = memberOptional.get();
-        User user = userOptional.get();
-
-        String encodedPassword = passwordEncoder.encode(password);
-        member.setPassword(encodedPassword);
-        user.setPassword(encodedPassword);
-
-        userRepository.save(user);
-        memberRepository.save(member);
-
-        return new MemberDTO(member);
     }
 
 
@@ -360,7 +327,7 @@ public class MemberService {
         Optional<Member> member = memberRepository.findById(id);
 
         TrainingPlan trainingPlan=trainingPlanService.getPlanById(membership.get().getTrainingPlan().getId());
-        if(membership.isEmpty()){
+        if(!membership.isPresent()){
             throw new ResourceNotFoundException("The membership with the given ID does not exist.");
         }
         membership.get().setTrainingPlan(trainingPlan);
@@ -383,12 +350,22 @@ public class MemberService {
             membership.get().setStatusType(StatusType.ONLINE);
         }
         Member updatedmember=member.get();
-       // User updatedUser=user.get();
 
         updatedmember.setTrainingPlan(trainingPlan);
 
         memberRepository.save(updatedmember);
         membershipRepository.save(membership.get());
+
+
+
+        // Define the desired date format
+        SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMMM dd, yyyy");
+
+        String formattedDate = formatter.format(membership.get().getEndDate());
+
+
+        emailService.sendEmail("kerim.sabic@stu.ibu.edu.ba", member.get().getFirstName(), "Membership renewal", "Your membership has been renewed! Current plan: "+trainingPlan.getName()+". Exparation date: "+ formattedDate+ " !", "Your membership has been renewed");
+
 
         return new MembershipDTO(membership.get());
     }

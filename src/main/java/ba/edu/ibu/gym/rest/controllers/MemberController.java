@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/")
-    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
+   // @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
     public ResponseEntity<List<MemberDTO>> getMembers() {
         return ResponseEntity.ok(memberService.getMembers());
 
@@ -73,15 +73,11 @@ public class MemberController {
 
     @RequestMapping(method = RequestMethod.PUT, path = "changePassword/{id}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
-    public ResponseEntity<MemberDTO> updateMemberPassword(@PathVariable String id, @RequestBody Map<String, String> passwords) {
-        String newPassword = passwords.get("password");
-        String repeatedPassword = passwords.get("repeatedPassword");
+    public ResponseEntity<MemberDTO> updateMemberPassword(@PathVariable String id, @RequestBody PasswordDTO passwordDTO) {
+      /*  String newPassword = passwords.get("password");
+        String repeatedPassword = passwords.get("repeatedPassword");*/
 
-       /* if (!Objects.equals(newPassword, repeatedPassword)) {
-            return ResponseEntity.badRequest().build();
-        }*/
-
-        return ResponseEntity.ok(memberService.updateMemberPassword(id, newPassword, repeatedPassword));
+        return ResponseEntity.ok(memberService.updateMemberPassword(id,passwordDTO));
     }
 
     /*@RequestMapping(method = RequestMethod.PUT,path = "/password/{id}")
@@ -109,9 +105,9 @@ public class MemberController {
         return null;
     }
 
-    @RequestMapping(method = RequestMethod.PUT,path = "setTrainer/{id}/{id2}")
+    @RequestMapping(method = RequestMethod.PUT,path = "setTrainer/{memberId}/{trainerId}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
-    public ResponseEntity<MemberDTO> addMembertToTrainerSpecial(@RequestParam String memberId,@RequestParam String trainerId){
+    public ResponseEntity<MemberDTO> addMembertToTrainerSpecial(@PathVariable String memberId,@PathVariable String trainerId){
         return ResponseEntity.ok(memberService.addMemberToTrainerSpecial(memberId,trainerId));
     }
 
@@ -123,7 +119,7 @@ public class MemberController {
 
 
 
-
+// ovo mi ne treba za sada
     @RequestMapping(method = RequestMethod.GET,path = "GETMEMBERS2/")
     public Page<MemberDTO> getMembers2(
             @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,

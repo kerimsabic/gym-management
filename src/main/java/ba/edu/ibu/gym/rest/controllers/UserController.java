@@ -1,10 +1,14 @@
 package ba.edu.ibu.gym.rest.controllers;
 
 
+import ba.edu.ibu.gym.core.service.PasswordResetService;
 import ba.edu.ibu.gym.core.service.UserService;
+import ba.edu.ibu.gym.rest.dto.MemberDTO;
+import ba.edu.ibu.gym.rest.dto.PasswordDTO;
 import ba.edu.ibu.gym.rest.dto.UserDTO;
 import ba.edu.ibu.gym.rest.dto.UserRequestDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    @Autowired
+    private  PasswordResetService passwordResetService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -74,6 +81,12 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable String id){
         userService.deleteUser(id);
         return null;
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "changePasswordUser/{id}")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public ResponseEntity<UserDTO> updateUserPassword(@PathVariable String id, @RequestBody PasswordDTO passwordDTO) {
+        return ResponseEntity.ok(passwordResetService.updateUserPassword(id,passwordDTO));
     }
 
 }

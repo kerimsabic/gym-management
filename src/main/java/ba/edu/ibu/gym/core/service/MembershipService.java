@@ -35,6 +35,15 @@ public class MembershipService {
 
     public List<MembershipDTO> getAllMemberships(){
         List<Membership> memberships = membershipRepository.findAll();
+        Date currentDate = new Date();
+        for (Membership membership:
+            memberships ) {
+            if (membership.getEndDate().before(currentDate)){
+                membership.setStatusType(StatusType.OFFLINE);
+                membershipRepository.save(membership);
+            }
+        }
+
         return memberships
                 .stream()
                 .map(MembershipDTO::new)
@@ -46,6 +55,26 @@ public class MembershipService {
         if(membership.isEmpty()){
             throw new ResourceNotFoundException("The membership with the given ID does not exist.");
         }
+
+        /*Date startDate = new Date();
+        int durationInMonths = payload.getNumOfMonths();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);                            //used to calculate the end date based on provided number of months
+        calendar.add(Calendar.MONTH, durationInMonths);
+        Date endDate = calendar.getTime();
+
+        membership.get().setEndDate(endDate);*/
+
+        Date currentDate = new Date();
+        if(membership.get().getEndDate().before(currentDate)){
+            membership.get().setStatusType(StatusType.OFFLINE);
+        }
+        else{
+            membership.get().setStatusType(StatusType.ONLINE);
+        }
+        membershipRepository.save(membership.get());
+
+
         return new MembershipDTO(membership.get());
     }
     public MembershipDTO getMembershipByMemberId(String id){
