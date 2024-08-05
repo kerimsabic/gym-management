@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "diplomski-photos",
+  "private_key_id": "5f1df9e2bc2b111aba1ff6876df63dccc9447667",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCjsEaiBAQUZkWS\nvILp7hb/4Lo2QLBDAQMGMAI2P9pJN/RGDHyD2wFlLmKrJ+UrvNQzE7Hi7JmdInSb\nopkVMENmZoORsRjH3Nwc5cVlqQDkSKJgEqIYjQUxWNslTm25edmoppRQFSVjkXf/\nn8lAroHqj5H7Y5iYEbxRezMA4EXKqGnnfQ3mpJyMbpMo6fhuTEVxrUTpUZY8MsBs\nShEmO4GsWopWjIcqr4xGdfU4JZhgCnLod5K7JrwS0iGGlkHvH10gbsjxBfgxrMDw\nVbdsGk9cZ2NYUNYXPelyuojkFTW6/c6hsLOvKo2bpgoX8EDag6Sbj267Q4EDS3LU\nDsG6+/C1AgMBAAECggEAIJGZkDFz3Vo3BBn5g1GR5nIgotxOpdpM7318Zy5fwJs/\nQXPJD5QzDB6FV9A9jy0IXKxRw9i3PNZm9LOOuXJLqtOBYKrnxxaI/j/yfYZ5rLJO\nCocSlQd0DcxD+EGJX/LgbafNUTzP3maKhYRVrwa5x0GvNmFr8m/u9Bhq/sTg5hA4\nMnuHoyw/UVixEkqfqwHTeLOMsLxlKtQ6yfSzpaXoaPsH2tgI8127mnKNoCxPJc8J\nARBwXFQo8FDj6fpwJu+HezJ3Jmatf0kblNmjneg0dAOGJWG+wxYBhQmaDEQFj89m\nukUvGpf8JaqWbAf+Bs5xbbsQolqD39G+jU46d/yjaQKBgQDbCFTO7oBTCyO7fU3c\nprK4+EwzbN0R5O3KPG2GP1gl3FK9MdlbHxDNzEi9t07QbmTMsCatg4NHuA97mbvS\n0BtmW2SzVhEWSKx9YqHE3rVDaf+D9EEozvLyG2zaoG2SJGriDXQygsdKPtwyZSoJ\nq21j0pjcL70Zgj/MMECD8UaMTQKBgQC/ULc19YIk8qnmDmVFfaUm3eLehmRuIeQo\nUbo0JlpxJnKxSF+4IioGng+1Q2GkxnodDV3ZaH42NEFG2AB0TnpVX4liEhu2UoM9\nAwuuC2mzx2lYyLQOHLLyS3AxTXHwNNmehcxtJx/ipV6JJHEjUKslAb/p9tjKpnyh\n34bDwR4KCQKBgEICncSLfmMInWk410ljd8NlGVn6OhnVe5CSa5Ok7YTjhI/+QPpE\nP4U2RsneP8NzMa+6er2aP+tSXmAqsb9T9p3/dzbQ/m9P0aQsIIK7d7dsb5Qt/aE1\n1WP/veuZo8wCa6/azCUY4sTOcwBBGs01O890vZrGTGAur9lyxU6+XTuVAoGABMpX\nnBFGrfgpiuonXQMVZJC/woSo9R0CIoRRXkbrktO8oXXHd8vbM4k3qXlDc6XInvub\nsvrr1h2e2NBFyqPAamzW+s6rRPhx8tAltbjxb5/5olB8ObI8RNbgu0tOJA6euFpv\nUPhe0wUDBfoUnybA8k9F5+zXZtOeYUtAi5xFTUkCgYBPknP4SmnLyoATWcy27WzW\nvQNUsgshMu2MzDaKZ4hhkCxGtj7vxOgSGyVHjju8DnM59SEqgmKSn9a2Ft/jX0E+\neMly8lvymjrZTpm1f4nPjQgxgc4eaoUWGpPPgXwJiI9/5ZckHYPIV360zq5Hhq59\nJ0etfgsXQUrWg7HglZsqgw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "googledrivephotouploads@diplomski-photos.iam.gserviceaccount.com",
+  "client_id": "117748665979071177656",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/googledrivephotouploads%40diplomski-photos.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

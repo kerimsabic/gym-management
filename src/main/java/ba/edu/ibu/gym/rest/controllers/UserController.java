@@ -1,18 +1,23 @@
 package ba.edu.ibu.gym.rest.controllers;
 
 
+import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.repository.UserRepository;
 import ba.edu.ibu.gym.core.service.PasswordResetService;
+import ba.edu.ibu.gym.core.service.PhotoService;
+import ba.edu.ibu.gym.core.service.S3Service;
 import ba.edu.ibu.gym.core.service.UserService;
-import ba.edu.ibu.gym.rest.dto.MemberDTO;
-import ba.edu.ibu.gym.rest.dto.PasswordDTO;
-import ba.edu.ibu.gym.rest.dto.UserDTO;
-import ba.edu.ibu.gym.rest.dto.UserRequestDTO;
+import ba.edu.ibu.gym.rest.dto.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -24,6 +29,14 @@ public class UserController {
 
     @Autowired
     private  PasswordResetService passwordResetService;
+
+    @Autowired
+    private S3Service s3Service;
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PhotoService photoService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -87,6 +100,34 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
     public ResponseEntity<UserDTO> updateUserPassword(@PathVariable String id, @RequestBody PasswordDTO passwordDTO) {
         return ResponseEntity.ok(passwordResetService.updateUserPassword(id,passwordDTO));
+    }
+
+
+   /* @RequestMapping(method = RequestMethod.POST, path = "/userId/upload-image")
+    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+    public String uploadImage(@PathVariable String userId, @RequestParam("file") MultipartFile file) throws IOException {
+        // Upload the file to S3
+        String fileUrl = s3Service.uploadFile(file.getInputStream(), file.getOriginalFilename());
+
+        // Update the user's image URL
+        User user = userService.getUserById2(userId);
+        userRepository.save(user);
+
+        return fileUrl; // Return the URL of the uploaded image
+    }*/
+
+
+    /*Saving photos*/
+    @RequestMapping(method = RequestMethod.POST, path = "/uploadToGoogleDrive/{id}")
+    public Object handleFileUpload(@RequestParam("image") MultipartFile file, @PathVariable String id) throws IOException, GeneralSecurityException {
+        if (file.isEmpty()) {
+            return "FIle is empty";
+        }
+        File tempFile = File.createTempFile("temp", null);
+        file.transferTo(tempFile);
+        ImageDTO res = photoService.uploadImageToDrive(tempFile, id);
+        System.out.println(res);
+        return res;
     }
 
 }
