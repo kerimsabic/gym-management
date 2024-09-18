@@ -75,4 +75,5 @@ public class Membership {
     public void setStatusType(StatusType statusType) {
         this.statusType = statusType;
     }
+
 }

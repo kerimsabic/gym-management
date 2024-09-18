@@ -9,14 +9,29 @@ configuration:
     default: 'mailgun'
 
 
-  aws:
-    access-key: YOUR_AWS_ACCESS_KEY
-    secret-key: YOUR_AWS_SECRET_KEY
-    s3:
-      bucket: YOUR_S3_BUCKET_NAME
-      region: YOUR_AWS_REGION
+azure:
+  blob:
+    service-endpoint: https://diplomskislike.blob.core.windows.net/
+    sas-token: sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-09-23T01:24:03Z&st=2024-08-24T17:24:03Z&spr=https&sig=s%2F0dCfCQTiYqruW6rjCx8Vx8nReh5FhmyB18c%2FltCbw%3D
+    container-name: diplomski-sklike-container
+
+
+stripe:
+  APIKEY: sk_test_51PmeQCAhI3Ct7zBvXnMauPuUyVbhzgcDE2Azy9BNIZUkJjnE8lzeMiMchpyymwpDP7ouxvg2UzJ3pWMwX70aUF3100qxWUabwj
+
 
 spring:
+  cloud:
+    azure:
+      storage:
+        blob:
+
+
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 30MB
+
   data:
     mongodb:
       uri: mongodb+srv://kerimsabic2:sifra@gym.f9lt0t2.mongodb.net/?retryWrites=true&w=majority

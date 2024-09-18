@@ -31,6 +31,7 @@ public class MemberService {
     private UserRepository userRepository;
     private UserService userService;
 
+
     private TrainingPlanService trainingPlanService;
     private MembershipService membershipService;
     private MembershipRepository membershipRepository;
@@ -183,6 +184,8 @@ public class MemberService {
         if(member.isEmpty()){
             throw new ResourceNotFoundException("The member with the given ID does not exist.");
         }
+
+
         Member updatedMembers= payload.toEntity();
         String trainerId=payload.getTrainerId();
 
@@ -203,10 +206,24 @@ public class MemberService {
         if(payload.getPassword()==null ){
             updatedMembers.setPassword(member.get().getPassword());
         }
+
         else{
             updatedMembers.setPassword(
                     passwordEncoder.encode(payload.getPassword())
             );
+        }
+
+        if(payload.getImage()==null){
+            updatedMembers.setImage(member.get().getImage());
+        }
+        if(payload.getTrainerId()== null){
+            updatedMembers.setTrainer((member.get().getTrainer()));
+        }
+        else{
+            Optional<User> trainer=userRepository.findById(payload.getTrainerId());
+
+                updatedMembers.setTrainer(trainer.get());
+
         }
 
 

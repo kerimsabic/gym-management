@@ -1,94 +1,154 @@
 package ba.edu.ibu.gym.core.service;
 
+import ba.edu.ibu.gym.core.exceptions.repository.ResourceNotFoundException;
 import ba.edu.ibu.gym.core.model.Attendance;
 import ba.edu.ibu.gym.core.model.Member;
-import ba.edu.ibu.gym.core.model.TrainingPlan;
-import ba.edu.ibu.gym.core.model.enums.UserType;
+import ba.edu.ibu.gym.core.model.Membership;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.repository.AttendanceRepository;
-import ba.edu.ibu.gym.core.repository.TrainingPlanRepository;
+import ba.edu.ibu.gym.core.repository.MemberRepository;
+
 import ba.edu.ibu.gym.rest.dto.AttendanceDTO;
 import ba.edu.ibu.gym.rest.dto.AttendanceRequestDTO;
-import ba.edu.ibu.gym.rest.dto.PlanRequestDTO;
-import org.assertj.core.api.Assertions;
+import ba.edu.ibu.gym.rest.dto.MembershipDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
-@AutoConfigureMockMvc
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 public class AttendaceServiceTest {
 
-    @MockBean
-    AttendanceRepository attendanceRepository;
+    @Mock
+    private AttendanceRepository attendanceRepository;
 
-    @Autowired
-    AttendanceService attendanceService;
+    @Mock
+    private MemberService memberService;
 
-   /* @Test
-    public void shouldReturnAttendanceWhenMarked(){
-        Member member1 = new Member();
-        member1.setFirstName("Kerim");
-        member1.setLastName("Sabic");
-        member1.setId("someId");
-        member1.setAddress("Sarajevo");
-        member1.setPhone("11111");
-        member1.setUserType(UserType.MEMBER);
-        member1.setEmail("kerimsabic.com");
+    @Mock
+    private MemberRepository memberRepository;
 
-        Date date1= new Date();
+    @Mock
+    private MembershipService membershipService;
 
-        Attendance attendance= new Attendance(
-                "someId",
-                date1,
-                member1
+    @InjectMocks
+    private AttendanceService attendanceService;
 
-        );
+    private Attendance attendance;
+    private Member member;
+    private MembershipDTO membershipDTO;
+    private AttendanceRequestDTO attendanceRequestDTO;
+    private Date currentDate;
+    private Date pastDate;
+    private Date futureDate;
 
-        Mockito.when(attendanceRepository.save(ArgumentMatchers.any(Attendance.class))).thenReturn(attendance);
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
 
-        AttendanceDTO recordedAttendance= attendanceService.recordAttendance(new AttendanceRequestDTO("someId"));
-        Assertions.assertThat(attendance.getId()).isEqualTo(recordedAttendance.getId());
-        Assertions.assertThat(attendance.getMember().getFirstName()).isEqualTo(recordedAttendance.getFirstName());
-        Assertions.assertThat(attendance.getMember().getEmail()).isEqualTo(recordedAttendance.getEmail());
-    }*/
+        currentDate = new Date();
+        pastDate = new Date(currentDate.getTime() - 1000000000L);
+        futureDate = new Date(currentDate.getTime() + 1000000000L);
+
+        member = new Member();
+        member.setId("1");
+        member.setFirstName("John");
+        member.setLastName("Doe");
+        member.setStatusType(StatusType.OFFLINE);
+        member.setEmail("john.doe@example.com");
+
+        attendance = new Attendance();
+        attendance.setId("1");
+        attendance.setAttendanceDate(currentDate);
+        attendance.setMember(member); // Ensure member is set
+
+        membershipDTO = new MembershipDTO();
+        membershipDTO.setEndDate(futureDate);
+
+        attendanceRequestDTO = new AttendanceRequestDTO();
+        attendanceRequestDTO.setMemberId("1");
+
+    }
 
     @Test
-    public void shouldReturnAttendanceById(){
+    public void testGetAllAttendance() {
+        // Prepare mock data
+        when(attendanceRepository.findAll()).thenReturn(List.of(attendance));
 
-        Member member1 = new Member();
-        member1.setFirstName("Kerim");
-        member1.setLastName("Sabic");
-        member1.setId("someId");
-        member1.setAddress("Sarajevo");
-        member1.setPhone("11111");
-        member1.setUserType(UserType.MEMBER);
-        member1.setEmail("kerimsabic.com");
-        member1.setTrainer(null);
+        List<AttendanceDTO> result = attendanceService.getAllAttendance();
 
-        Date date1= new Date();
-
-        Attendance attendance= new Attendance(
-                "someId",
-                date1,
-                member1
-
-        );
-
-        Mockito.when(attendanceRepository.findById("someId")).thenReturn(Optional.of(attendance));
-        AttendanceDTO result= attendanceService.getAttendanceById(attendance.getId());
-       /* if (attendance.getMember().getTrainer() != null) {
-            Assertions.assertThat(attendance.getMember().getTrainer().getId())
-                    .isEqualTo(result.getTrainerId());
-        }*/
-        Assertions.assertThat(attendance.getMember().getEmail()).isEqualTo(result.getEmail());
-        /*Assertions.assertThat(trainingPlan.getDescription()).isEqualTo(result.getDescription());
-        Assertions.assertThat(trainingPlan.getPrice()).isEqualTo(result.getPrice());*/
+        assertEquals(1, result.size());
+        assertEquals("1", result.get(0).getId());
+        assertEquals("John", result.get(0).getFirstName()); // Check other fields if necessary
     }
+
+    @Test
+    public void testGetAttendanceByMemberId() {
+        // Prepare mock data
+        when(attendanceRepository.findTop30ByMember_IdOrderByAttendanceDateDesc("1")).thenReturn(List.of(attendance));
+
+        List<AttendanceDTO> result = attendanceService.getAttendanceByMemberId("1");
+
+        assertEquals(1, result.size());
+        assertEquals("1", result.get(0).getId());
+    }
+
+    @Test
+    public void testGetAttendanceById() {
+        // Prepare mock data
+        when(attendanceRepository.findById("1")).thenReturn(Optional.of(attendance));
+
+        AttendanceDTO result = attendanceService.getAttendanceById("1");
+
+        assertEquals("1", result.getId());
+    }
+
+    @Test
+    public void testGetAttendanceByIdNotFound() {
+        // Prepare mock data
+        when(attendanceRepository.findById("1")).thenReturn(Optional.empty());
+
+        ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> {
+            attendanceService.getAttendanceById("1");
+        });
+
+        assertEquals("Attendance  with the given ID does not exist.", thrown.getMessage());
+    }
+
+    @Test
+    public void testGetAttendanceByDate() {
+        // Prepare mock data
+        when(attendanceRepository.findByAttendanceDateBetween(pastDate, futureDate)).thenReturn(List.of(attendance));
+
+        List<AttendanceDTO> result = attendanceService.getAttendanceByDate(pastDate, futureDate);
+
+        assertEquals(1, result.size());
+        assertEquals("1", result.get(0).getId());
+    }
+
+
+    @Test
+    public void testRecordAttendanceMembershipExpired() {
+        // Prepare mock data
+        membershipDTO.setEndDate(pastDate);
+
+        when(memberService.getMemberById2("1")).thenReturn(member);
+        when(membershipService.getMembershipByMemberId("1")).thenReturn(membershipDTO);
+
+        ResourceNotFoundException thrown = assertThrows(ResourceNotFoundException.class, () -> {
+            attendanceService.recordAttendance(attendanceRequestDTO);
+        });
+
+        assertEquals("Membership expired", thrown.getMessage());
+    }
+
+
 }

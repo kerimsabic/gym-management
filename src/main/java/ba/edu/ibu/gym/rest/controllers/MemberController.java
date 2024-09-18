@@ -87,7 +87,7 @@ public class MemberController {
     }*/
 
     @RequestMapping(method = RequestMethod.PUT,path = "/membership/{id}")
-    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+   // @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
     public ResponseEntity<MembershipDTO> updateMemberMembershipSpecial(@PathVariable String id, @RequestBody MembershipRequestDTO payload){
         return ResponseEntity.ok(memberService.updateMemberMembershipWithMembership(id,payload));
     }
@@ -111,9 +111,9 @@ public class MemberController {
         return ResponseEntity.ok(memberService.addMemberToTrainerSpecial(memberId,trainerId));
     }
 
-    @RequestMapping(method = RequestMethod.PUT,path = "removeTrainer/{id}")
+    @RequestMapping(method = RequestMethod.PUT,path = "removeTrainer/{memberId}")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
-    public ResponseEntity<MemberDTO> removeMemberFromTrainer(@RequestParam String memberId){
+    public ResponseEntity<MemberDTO> removeMemberFromTrainer(@PathVariable String memberId){
         return ResponseEntity.ok(memberService.removeMemberFromTrainer(memberId));
     }
 

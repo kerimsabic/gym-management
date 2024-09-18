@@ -27,7 +27,7 @@ public class TrainingPlanController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'MEMBER')")
+   // @PreAuthorize("hasAnyAuthority('ADMIN', 'MEMBER')")
     public ResponseEntity<TrainingPlan> getPlanByID(@PathVariable String id) {
         return ResponseEntity.ok(trainingPlanService.getPlanById(id));
     }

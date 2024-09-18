@@ -46,6 +46,47 @@ public class PhotoService {
 
     }
 
+    public ImageDTO uploadImageToDriveWithoudUserId(File file, String email) throws GeneralSecurityException, IOException {
+        ImageDTO res = new ImageDTO();
+
+        try{
+            String folderId = "1jcC1BOH4Mc5O8Q5TNyZAKm1zWjzwG4LV";
+            Drive drive = createDriveService();
+            com.google.api.services.drive.model.File fileMetaData = new com.google.api.services.drive.model.File();
+            fileMetaData.setName(file.getName());
+            fileMetaData.setParents(Collections.singletonList(folderId));
+            FileContent mediaContent = new FileContent("image/jpeg", file);
+            com.google.api.services.drive.model.File uploadedFile = drive.files().create(fileMetaData, mediaContent)
+                    .setFields("id").execute();
+            String imageUrl = "https://drive.google.com/uc?export=view&id="+uploadedFile.getId();
+            System.out.println("IMAGE URL: " + imageUrl);
+            file.delete();
+            res.setStatus(200);
+            res.setMessage("Image Successfully Uploaded To Drive");
+            res.setUrl(imageUrl);
+
+            Optional<User> userOptional = userRepository.findByEmail(email);
+            if(userOptional.isEmpty()){
+                throw new IllegalArgumentException("no such user");
+            }
+            User user = userOptional.get();
+            if(user.getUserType().equals(UserType.MEMBER)){
+                Optional<Member> member= memberRepository.findByEmail(email);
+                member.get().setImage(imageUrl);
+                memberRepository.save(member.get());
+            }
+            user.setImage(imageUrl);
+            userRepository.save(user);
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            res.setStatus(500);
+            res.setMessage(e.getMessage());
+        }
+        return  res;
+
+    }
+
     public ImageDTO uploadImageToDrive(File file, String userId) throws GeneralSecurityException, IOException {
         ImageDTO res = new ImageDTO();
 
@@ -79,6 +120,34 @@ public class PhotoService {
             userRepository.save(user);
 
 
+
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            res.setStatus(500);
+            res.setMessage(e.getMessage());
+        }
+        return  res;
+
+    }
+
+    public ImageDTO uploadImage(File file) throws GeneralSecurityException, IOException {
+        ImageDTO res = new ImageDTO();
+
+        try{
+            String folderId = "1jcC1BOH4Mc5O8Q5TNyZAKm1zWjzwG4LV";
+            Drive drive = createDriveService();
+            com.google.api.services.drive.model.File fileMetaData = new com.google.api.services.drive.model.File();
+            fileMetaData.setName(file.getName());
+            fileMetaData.setParents(Collections.singletonList(folderId));
+            FileContent mediaContent = new FileContent("image/jpeg", file);
+            com.google.api.services.drive.model.File uploadedFile = drive.files().create(fileMetaData, mediaContent)
+                    .setFields("id").execute();
+            String imageUrl = "https://drive.google.com/uc?export=view&id="+uploadedFile.getId();
+            System.out.println("IMAGE URL: " + imageUrl);
+            file.delete();
+            res.setStatus(200);
+            res.setMessage("Image Successfully Uploaded To Drive");
+            res.setUrl(imageUrl);
 
         }catch (Exception e){
             System.out.println(e.getMessage());

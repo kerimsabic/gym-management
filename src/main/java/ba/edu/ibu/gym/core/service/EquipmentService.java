@@ -35,6 +35,11 @@ public class EquipmentService {
     }
 
     public Equipment addEquipment(EquipmentRequestDTO equipment){
+        if(equipment.getServiceHistory()==null){
+            Date currentDate = new Date();
+            equipment.setServiceHistory(new ArrayList<Date>());
+            equipment.getServiceHistory().add(currentDate);
+        }
         Equipment gymEquipment= equipmentRepository.save(equipment.toEntity());
         return gymEquipment;
     }

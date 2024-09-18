@@ -31,6 +31,8 @@ public class UserDTO {
 
     }
 
+    public UserDTO(){}
+
     public String getEmail() {
         return email;
     }

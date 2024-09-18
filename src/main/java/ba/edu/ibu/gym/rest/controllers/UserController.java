@@ -1,22 +1,27 @@
 package ba.edu.ibu.gym.rest.controllers;
 
 
+
 import ba.edu.ibu.gym.core.model.User;
 import ba.edu.ibu.gym.core.repository.UserRepository;
+import ba.edu.ibu.gym.core.service.AzureBlobStorageService;
 import ba.edu.ibu.gym.core.service.PasswordResetService;
 import ba.edu.ibu.gym.core.service.PhotoService;
-import ba.edu.ibu.gym.core.service.S3Service;
+
 import ba.edu.ibu.gym.core.service.UserService;
 import ba.edu.ibu.gym.rest.dto.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.transform.Result;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
@@ -30,16 +35,20 @@ public class UserController {
     @Autowired
     private  PasswordResetService passwordResetService;
 
-    @Autowired
-    private S3Service s3Service;
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private PhotoService photoService;
 
-    public UserController(UserService userService) {
+    @Autowired
+    public static final int SUCCESS = 200; // Success
+    private final AzureBlobStorageService azureBlobStorageService;
+
+    public UserController(UserService userService, AzureBlobStorageService azureBlobStorageService) {
         this.userService = userService;
+        this.azureBlobStorageService= azureBlobStorageService;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/")
@@ -97,7 +106,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "changePasswordUser/{id}")
-    @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
+ //   @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN')")
     public ResponseEntity<UserDTO> updateUserPassword(@PathVariable String id, @RequestBody PasswordDTO passwordDTO) {
         return ResponseEntity.ok(passwordResetService.updateUserPassword(id,passwordDTO));
     }
@@ -123,11 +132,65 @@ public class UserController {
         if (file.isEmpty()) {
             return "FIle is empty";
         }
-        File tempFile = File.createTempFile("temp", null);
+        File tempFile = File.createTempFile("IMG", null);
         file.transferTo(tempFile);
         ImageDTO res = photoService.uploadImageToDrive(tempFile, id);
         System.out.println(res);
         return res;
     }
 
+    @RequestMapping(method = RequestMethod.POST, path = "/uploadToGoogleDriveEmail/{email}")
+    public Object handleFileUploadWithoudUserId(@RequestParam("image") MultipartFile file, @PathVariable String email) throws IOException, GeneralSecurityException {
+        if (file.isEmpty()) {
+            return "File is empty";
+        }
+        File tempFile = File.createTempFile("IMG", null);
+        file.transferTo(tempFile);
+        ImageDTO res = photoService.uploadImageToDriveWithoudUserId(tempFile, email);
+        System.out.println(res);
+        return res;
+    }
+    @RequestMapping(method = RequestMethod.POST, path = "/uploadImage")
+    public Object uploadImage(@RequestParam("image") MultipartFile file ) throws IOException, GeneralSecurityException {
+        if (file.isEmpty()) {
+            return "File is empty";
+        }
+        File tempFile = File.createTempFile("IMG", null);
+        file.transferTo(tempFile);
+        ImageDTO res = photoService.uploadImage(tempFile);
+        System.out.println(res);
+        return res;
+    }
+
+    @PostMapping("/uploadImageAzure")
+    public ResponseEntity<ImageUploadResponse> uploadImageAzure(@RequestParam("image") MultipartFile file) {
+        try {
+            String imageUrl = azureBlobStorageService.uploadImage(file);
+
+            // Create and return a successful response
+            ImageUploadResponse response = new ImageUploadResponse(true, "Image uploaded successfully", imageUrl);
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            ImageUploadResponse response = new ImageUploadResponse(false, "Image upload failed: " + e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @PostMapping("/uploadImageAzure/{memberId}")
+    public ResponseEntity<ImageUploadResponse> uploadImageAzureWithMemberId(@RequestParam("image") MultipartFile file, @PathVariable String memberId) {
+        try {
+            String imageUrl = azureBlobStorageService.uploadImageAzureWithMemberId(file, memberId);
+
+            // Create and return a successful response
+            ImageUploadResponse response = new ImageUploadResponse(true, "Image uploaded successfully", imageUrl);
+            return ResponseEntity.ok(response);
+
+        } catch (IOException e) {
+            // Create and return an error response
+            ImageUploadResponse response = new ImageUploadResponse(false, "Image upload failed: " + e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 }
+
+

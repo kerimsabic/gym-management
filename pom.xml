@@ -15,6 +15,7 @@
     <description>gym</description>
     <properties>
         <java.version>17</java.version>
+        <spring-cloud-azure.version>5.13.0</spring-cloud-azure.version> <!-- Upgrade to 5.13.0 -->
     </properties>
     <dependencies>
 
@@ -35,6 +36,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version> 5.10.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -90,10 +97,12 @@
 
 
         <dependency>
-            <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-s3</artifactId>
-            <version>1.12.470</version>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
         </dependency>
+
+
+
 
 
 
@@ -110,8 +119,28 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>26.1.0</version>
+        </dependency>
+
+
 
     </dependencies>
+
+    <!--    The Spring Cloud Azure Bill of Materials (BOM)-->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.azure.spring</groupId>
+                <artifactId>spring-cloud-azure-dependencies</artifactId>
+                <version>5.15.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
