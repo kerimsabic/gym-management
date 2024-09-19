@@ -34,7 +34,7 @@ public class PaymentService {
         Stripe.apiKey = stripeSecretKey;
 
         String successUrl = String.format(
-                "http://localhost:5173/payment-success?user_id=%s&training_plan_id=%s&num_of_months=%d",
+                "https://diplomski.gymversion2.pages.dev/payment-success?user_id=%s&training_plan_id=%s&num_of_months=%d",
                 req.getUserId(), // Ensure this is part of the PaymentRequest
                 req.getTrainingPlanId(), // Ensure this is part of the PaymentRequest
                 req.getNumOfMonths()
@@ -47,7 +47,7 @@ public class PaymentService {
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl(successUrl)
-                .setCancelUrl("http://localhost:5173/home")
+                .setCancelUrl("https://diplomski.gymversion2.pages.dev/home")
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setQuantity(1L)
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
@@ -74,7 +74,7 @@ public class PaymentService {
         Stripe.apiKey = stripeSecretKey;
 
         String successUrl = String.format(
-                "http://localhost:5173/login",
+                "https://diplomski.gymversion2.pages.dev/login",
                 req.getUserId(), // Ensure this is part of the PaymentRequest
                 req.getTrainingPlanId(), // Ensure this is part of the PaymentRequest
                 req.getNumOfMonths()
@@ -87,7 +87,7 @@ public class PaymentService {
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl(successUrl)
-                .setCancelUrl("http://localhost:5173/home")
+                .setCancelUrl("https://diplomski.gymversion2.pages.dev/home")
                 .addLineItem(SessionCreateParams.LineItem.builder()
                         .setQuantity(1L)
                         .setPriceData(SessionCreateParams.LineItem.PriceData.builder()
