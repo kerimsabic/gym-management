@@ -29,7 +29,7 @@ public class EquipmentServiceTest {
     EquipmentService equipmentService;
 
     @Test
-    public void shouldEquipmentWhenCreated(){
+    public void shouldReturnEquipmentWhenCreated(){
         Equipment equipment= new Equipment();
         equipment.setManufacturer("Test123");
         equipment.setType("bench press");

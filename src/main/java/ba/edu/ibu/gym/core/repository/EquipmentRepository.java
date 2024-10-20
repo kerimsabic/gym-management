@@ -12,4 +12,5 @@ import java.util.Optional;
 @Repository
 public interface EquipmentRepository extends MongoRepository<Equipment, String> {
 
+    List<Equipment> findByName(String treadmill);
 }

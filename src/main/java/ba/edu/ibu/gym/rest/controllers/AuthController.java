@@ -15,9 +15,9 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/register")
-    public ResponseEntity<TrainerDTO> register(@RequestBody TrainerRequestDTO user) {
-        return ResponseEntity.ok(authService.signUp(user));
+    @RequestMapping(method = RequestMethod.POST, path = "/registerTrainer")
+    public ResponseEntity<UserDTO> registerTrainer(@RequestBody UserRequestDTO trainer) {
+        return ResponseEntity.ok(authService.signUpTrainer(trainer));
     }
     @RequestMapping(method = RequestMethod.POST, path = "/registerMember")
     public ResponseEntity<MemberDTO> registerMember(@RequestBody MemberRequestDTO member) {

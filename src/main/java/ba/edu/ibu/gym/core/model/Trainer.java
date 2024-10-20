@@ -10,7 +10,7 @@ import java.util.List;
 public class Trainer extends User{
 
 
-    private List<Member> members;
+    /*private List<Member> members;
 
 
 
@@ -27,10 +27,10 @@ public class Trainer extends User{
     //}
 
     public void removeMember(Member member) {
-        if (members != null) {
+        if (getMembers() != null) {
             members.remove(member);
         }
-    }
+    }*/
 
 
 }

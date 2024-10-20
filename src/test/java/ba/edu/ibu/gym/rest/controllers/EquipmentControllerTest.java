@@ -43,7 +43,7 @@ public class EquipmentControllerTest {
     AuthenticationProvider authenticationProvider;
 
     @Test
-    public void shoudReturnAllTrainingPlans() throws Exception {
+    public void shoudReturnAllEquipment() throws Exception {
 
         Equipment equipment= new Equipment();
         equipment.setManufacturer("Test123");

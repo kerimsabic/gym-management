@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,26 +19,27 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class TrainerService {
-    private TrainerRepository trainerRepository;
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final TrainerRepository trainerRepository;
+    private final UserRepository userRepository;
 
 
+    private final PasswordEncoder passwordEncoder;
 
 
-    public TrainerService(TrainerRepository trainerRepository,UserRepository userRepository) {
+
+
+    public TrainerService(TrainerRepository trainerRepository,UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.trainerRepository = trainerRepository;
         this.userRepository=userRepository;
+        this.passwordEncoder=passwordEncoder;
 
     }
 
-    public List<TrainerDTO> getTrainers() {
-        List<Trainer> trainers = trainerRepository.findAll();
+    public List<UserDTO> getTrainers() {
+        List<User> trainers = userRepository.findByUserType(UserType.TRAINER);
         return trainers
                 .stream()
-                .map(TrainerDTO::new)
+                .map(UserDTO::new)
                 .collect(toList());
     }
 
@@ -67,9 +68,11 @@ public class TrainerService {
 
         Trainer trainer = payload.toEntity();
         trainer.setUserType(UserType.TRAINER);
+
         trainerRepository.save(trainer);
 
         userRepository.save(trainer);
+
         return new TrainerDTO(trainer);
     }
 

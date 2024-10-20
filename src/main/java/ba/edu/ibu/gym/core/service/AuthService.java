@@ -10,8 +10,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -19,78 +17,50 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final MemberRepository memberRepository;
-    private final TrainerRepository trainerRepository;
     private final TrainingPlanService trainingPlanService;
-    private final TrainerService trainerService;
+    private final UserService userService;
     private final MemberService memberService;
     private final MembershipRepository membershipRepository;
 
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
     @Autowired
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
 
 
-    public AuthService(UserRepository userRepository,MemberRepository memberRepository, TrainerRepository trainerRepository, TrainingPlanService trainingPlanService,
-                       TrainerService trainerService, MemberService membershipService, MembershipRepository membershipRepository) {
+    public AuthService(UserRepository userRepository,MemberRepository memberRepository, TrainingPlanService trainingPlanService,
+                       UserService userService, MemberService membershipService, MembershipRepository membershipRepository) {
         this.userRepository = userRepository;
         this.memberRepository=memberRepository;
-        this.trainerRepository=trainerRepository;
         this.trainingPlanService=trainingPlanService;
-        this.trainerService=trainerService;
+        this.userService=userService;
         this.memberService=membershipService;
         this.membershipRepository=membershipRepository;
     }
 
-    public TrainerDTO signUp(TrainerRequestDTO trainerRequestDTO) {
-        trainerRequestDTO.setPassword(
-                passwordEncoder.encode(trainerRequestDTO.getPassword())
-        );
-        Trainer user = trainerRequestDTO.toEntity();
-        user.setUserType(UserType.TRAINER);
-        trainerRepository.save(user);
-        userRepository.save(user);
-
-
-       /* if (user.getUserType().equals(UserType.TRAINER)) {
-            Trainer trainer=new Trainer();
-            trainer.setId(user.getId());
-            trainer.setFirstName(user.getFirstName());
-            trainer.setLastName(user.getLastName());
-            trainer.setEmail(user.getEmail());
-            trainer.setPassword(user.getPassword());
-            trainer.setPhone(user.getPhone());
-            trainer.setAddress(user.getAddress());
-            trainer.setImage(user.getImage());
-            trainer.setUsername(user.getUsername());
-            trainer.setMembers(new ArrayList<Member>());
-            trainerRepository.save(trainer);
-        }*/
-
-        //moras popravit trainer value u memberima da moze trainer biti null
-
-        return new TrainerDTO(user);
+    public UserDTO signUpTrainer(UserRequestDTO trainerRequestDTO) {
+        trainerRequestDTO.setPassword(passwordEncoder.encode(trainerRequestDTO.getPassword()));
+        User trainer = trainerRequestDTO.toEntity();
+        trainer.setUserType(UserType.TRAINER);
+        userRepository.save(trainer);
+        return new UserDTO(trainer);
     }
 
     public UserDTO signUpAdmin(UserRequestDTO userRequestDTO) {
-        userRequestDTO.setPassword(
-                passwordEncoder.encode(userRequestDTO.getPassword())
-        );
+        userRequestDTO.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         User user = userRequestDTO.toEntity();
-        userRepository.save(user);
         user.setUserType(UserType.ADMIN);
+        userRepository.save(user);
         return new UserDTO(user);
     }
 
     public UserDTO updateAdmin(String id, UserRequestDTO payload){
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
-            throw new ResourceNotFoundException("The user with the given ID does not exist.");
+            throw new ResourceNotFoundException("The admin with the given ID does not exist.");
         }
         User updatedUser= payload.toEntity();
         updatedUser.setId(user.get().getId());
@@ -108,39 +78,37 @@ public class AuthService {
     }
 
     public MemberDTO signUpMember(MemberRequestDTO memberRequestDTO) {
-        System.out.println(memberRequestDTO.getNumOfMonths());
-        memberRequestDTO.setPassword(
-                passwordEncoder.encode(memberRequestDTO.getPassword())
-        );
+        memberRequestDTO.setPassword(passwordEncoder.encode(memberRequestDTO.getPassword()));
         Member member = memberRequestDTO.toEntity();
-        String trainingPlanId=memberRequestDTO.getTrainingPlanId();
-        TrainingPlan trainingPlan = trainingPlanService.getPlanById(trainingPlanId);
 
-        if(memberRequestDTO.getTrainerId()!=null){
-            String trainerId= memberRequestDTO.getTrainerId();      //without this for trainer and training plan it would register the member in the database but in the response on swagger both id would be null
-            Trainer trainer= trainerService.getTrainerById2(trainerId);
+        String trainingPlanId = memberRequestDTO.getTrainingPlanId();
+        TrainingPlan trainingPlan = trainingPlanService.getPlanById(trainingPlanId);
+        member.setTrainingPlan(trainingPlan);
+
+        if (memberRequestDTO.getTrainerId() != null) {
+            String trainerId = memberRequestDTO.getTrainerId();
+            User trainer = userService.getUserById2(trainerId);
             member.setTrainer(trainer);
         }
-        member.setTrainingPlan(trainingPlan);
+
         member.setUserType(UserType.MEMBER);
 
-
-        memberRepository.save(member);
         userRepository.save(member);
+        memberRepository.save(member);
 
-        if(member!=null && member.getId()!=null){           //if member successfully saved to the database
+        if(member!=null && member.getId()!=null){
             int num=memberRequestDTO.getNumOfMonths();
-            String memberId=member.getId();
-            Membership membership=memberService.createMembershipOnMemberCreation(memberId,num,trainingPlanId);
+            String email=member.getEmail();
+            Membership membership=memberService.createMembershipOnMemberCreation(email,num,trainingPlanId);
             membershipRepository.save(membership);
             System.out.println(membership.getEndDate());
         }
 
-        memberRepository.save(member);
         userRepository.save(member);
-
+        memberRepository.save(member);
         return new MemberDTO(member);
     }
+
 
     public LoginDTO signIn(LoginRequestDTO loginRequestDTO) {
         authenticationManager.authenticate(

@@ -26,7 +26,7 @@ public class TrainerController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/")
     @PreAuthorize("hasAnyAuthority('MEMBER', 'ADMIN', 'TRAINER')")
-    public ResponseEntity<List<TrainerDTO>> getTrainers() {
+    public ResponseEntity<List<UserDTO>> getTrainers() {
         return ResponseEntity.ok(trainerService.getTrainers());
     }
 
@@ -35,11 +35,12 @@ public class TrainerController {
     public ResponseEntity<TrainerDTO> getTrainerById(@PathVariable String id) {
         return ResponseEntity.ok(trainerService.getTrainerById(id));
     }
-    @RequestMapping(method = RequestMethod.POST,path = "/register")
+   /* @RequestMapping(method = RequestMethod.POST,path = "/register")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<TrainerDTO> createTrainer(@RequestBody TrainerRequestDTO trainer){
         return ResponseEntity.ok(trainerService.addTrainer(trainer));
-    }
+    }*/
+
     @RequestMapping(method = RequestMethod.PUT,path = "/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<TrainerDTO> updateTrainer(@PathVariable String id,@RequestBody TrainerRequestDTO trainer){

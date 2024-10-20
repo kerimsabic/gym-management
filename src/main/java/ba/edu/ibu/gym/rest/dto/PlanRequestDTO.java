@@ -11,6 +11,11 @@ public class PlanRequestDTO {
     private String price;
 
     private StatusType statusType;
+    private String accessTime;
+    private String numOfPeople;
+    private boolean  water;
+    private boolean freeparking;
+
 
 
     public PlanRequestDTO(){
@@ -22,6 +27,10 @@ public class PlanRequestDTO {
         this.description=trainingPlan.getDescription();
         this.price=trainingPlan.getPrice();
         this.statusType=trainingPlan.getStatusType();
+        this.freeparking=trainingPlan.isFreeparking();
+        this.water=trainingPlan.isWater();
+        this.numOfPeople=trainingPlan.getNumOfPeople();
+        this.accessTime=trainingPlan.getAccessTime();
     }
 
     public TrainingPlan toEntity(){
@@ -30,6 +39,10 @@ public class PlanRequestDTO {
         trainingPlan.setDescription(description);
         trainingPlan.setPrice(price);
         trainingPlan.setStatusType(statusType);
+        trainingPlan.setWater(water);
+        trainingPlan.setFreeparking(freeparking);
+        trainingPlan.setAccessTime(accessTime);
+        trainingPlan.setNumOfPeople(numOfPeople);
         return trainingPlan;
     }
 
@@ -63,5 +76,37 @@ public class PlanRequestDTO {
 
     public StatusType getStatusType() {
         return statusType;
+    }
+
+    public String getAccessTime() {
+        return accessTime;
+    }
+
+    public void setAccessTime(String accessTime) {
+        this.accessTime = accessTime;
+    }
+
+    public String getNumOfPeople() {
+        return numOfPeople;
+    }
+
+    public void setNumOfPeople(String numOfPeople) {
+        this.numOfPeople = numOfPeople;
+    }
+
+    public boolean isWater() {
+        return water;
+    }
+
+    public void setWater(boolean water) {
+        this.water = water;
+    }
+
+    public boolean isFreeparking() {
+        return freeparking;
+    }
+
+    public void setFreeparking(boolean freeparking) {
+        this.freeparking = freeparking;
     }
 }

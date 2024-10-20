@@ -4,6 +4,7 @@ package ba.edu.ibu.gym.core.model;
 import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,14 +21,17 @@ public class User implements UserDetails {
     private String firstName;
     private String lastName;
     private String password;
+    @Indexed(unique = true)
     private String email;
+    @Indexed(unique = true)
     private String username;
+    @Indexed(unique = true)
     private String phone;
     private String address;
     private String image;
     private StatusType statusType;
 
-    public User(String id, String firstName, String lastName, String password, String email, String username, String phone, String address, String image, StatusType statusType) {
+    public User(String id, String firstName, String lastName, String password, String email, String username, String phone, String address, String image, StatusType statusType, UserType userType) {
         this.id = id;
         this.userType = userType;
         this.firstName = firstName;

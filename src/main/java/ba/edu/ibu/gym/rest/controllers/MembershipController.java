@@ -27,7 +27,7 @@ public class MembershipController {
 
 
     @RequestMapping(method = RequestMethod.GET, path = "/")
-    @PreAuthorize("hasAuthority('ADMIN')")
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<MembershipDTO>> getMemberships() {
         return ResponseEntity.ok(membershipService.getAllMemberships());
     }
@@ -38,7 +38,7 @@ public class MembershipController {
         return ResponseEntity.ok(membershipService.getMembershipById(id));
     }
     @RequestMapping(method = RequestMethod.GET, path = "/member/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'MEMBER')")
     public ResponseEntity<MembershipDTO> getMembershipByMemberId(@PathVariable String id) {
         return ResponseEntity.ok(membershipService.getMembershipByMemberId(id));
     }

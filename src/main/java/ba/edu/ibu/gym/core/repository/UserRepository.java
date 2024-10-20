@@ -1,6 +1,8 @@
 package ba.edu.ibu.gym.core.repository;
 
+import ba.edu.ibu.gym.core.model.Member;
 import ba.edu.ibu.gym.core.model.User;
+import ba.edu.ibu.gym.core.model.enums.StatusType;
 import ba.edu.ibu.gym.core.model.enums.UserType;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -22,5 +24,11 @@ public interface UserRepository extends MongoRepository<User, String> {
 
 
     List<User> findByUserType(UserType userType);
+
+
+
+    List<User> findByStatusTypeAndUserType(StatusType statusType, UserType userType);
+
+
 
 }

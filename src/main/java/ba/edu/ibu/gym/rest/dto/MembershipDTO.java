@@ -32,6 +32,10 @@ public class MembershipDTO {
         this.statusType=membership.getStatusType();
     }
 
+    public MembershipDTO(){
+
+    }
+
 
     public String getMemberId() {
         return memberId;

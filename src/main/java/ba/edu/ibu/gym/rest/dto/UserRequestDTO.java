@@ -11,11 +11,11 @@ public class UserRequestDTO {
     private String email;
     private String password;
     private String username;
-    private UserType userType;
+   // private UserType userType;
     private String phone;
     private String address;
     private String image;
-    private StatusType statusType;
+   // private StatusType statusType;
 
 
     public  UserRequestDTO() { }
@@ -25,12 +25,12 @@ public class UserRequestDTO {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.userType = user.getUserType();
+       // this.userType = user.getUserType();
         this.phone=user.getPhone();
         this.address=user.getAddress();
         this.image=user.getImage();
         this.username= user.getUsername();
-        this.statusType=user.getStatusType();
+       // this.statusType=user.getStatusType();
     }
     public User toEntity(){
         User user= new User();
@@ -38,12 +38,13 @@ public class UserRequestDTO {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
-        user.setUserType(userType);
+     //  user.setUserType(userType);
         user.setAddress(address);
         user.setPhone(phone);
         user.setImage(image);
         user.setUsername(username);
-        user.setStatusType(statusType);
+       // user.setStatusType(statusType);
+        user.setStatusType(StatusType.OFFLINE);
         return user;
     }
 
@@ -114,19 +115,19 @@ public class UserRequestDTO {
         this.username = username;
     }
 
-    public UserType getUserType() {
+  /*  public UserType getUserType() {
         return userType;
     }
 
     public void setUserType(UserType userType) {
         this.userType = userType;
-    }
+    }*/
 
-    public StatusType getStatusType() {
+   /* public StatusType getStatusType() {
         return statusType;
     }
 
     public void setStatusType(StatusType statusType) {
         this.statusType = statusType;
-    }
+    }*/
 }
