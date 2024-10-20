@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${security.jwt.secret}")
+    @Value("${SECURITY_JWT_SECRET}")
     private String jwtSigningKey;
 
 

@@ -30,13 +30,13 @@ public class AzureBlobStorageService {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Value("${azure.blob.service-endpoint}")
+    @Value("${AZURE_BLOB_SERVICE_ENDPOINT}")
     private String blobServiceEndpoint;
 
-    @Value("${azure.blob.sas-token}")
+    @Value("${AZURE_BLOB_SAS_TOKEN}")
     private String sasToken;
 
-    @Value("${azure.blob.container-name}")
+    @Value("${AZURE_BLOB_CONTAINER_NAME}")
     private String containerName;
 
     private BlobContainerClient getBlobContainerClient() {

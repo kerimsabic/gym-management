@@ -19,13 +19,11 @@ public class EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(body);
-        // SimpleMailMessage does not support HTML, so `altBody` is not used here.
+
 
         try {
             emailSender.send(message);
-            // You may add logging or other handling here.
         } catch (Exception e) {
-            // Handle exception or log error
             e.printStackTrace();
         }
     }

@@ -33,19 +33,19 @@ public class TrainingPlanController {
     }
 
     @RequestMapping(method = RequestMethod.POST, path = "/create")
-    @PreAuthorize("hasAuthority('ADMIN')")
+  //  @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<TrainingPlan> createTrainingPlan(@RequestBody PlanRequestDTO plan) {
         return ResponseEntity.ok(trainingPlanService.createTrainingPlan(plan));
     }
 
     @RequestMapping(method = RequestMethod.PUT,path = "/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    //PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<TrainingPlan> updateTrainingPlan(@PathVariable String id, @RequestBody PlanRequestDTO plan){
         return ResponseEntity.ok(trainingPlanService.updateTrainigPlan(id,plan));
     }
 
     @RequestMapping(method = RequestMethod.DELETE,path = "/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+   // @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> deleteTrainingPlan(@PathVariable String id){
         trainingPlanService.deleteTrainingPlan(id);
         return null;
